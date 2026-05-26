@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fermento — gestionale desktop per birrifici artigianali. Magazzino, produzione e vendite. Tutto sul tuo computer, senza canoni mensili.">
+  <meta property="og:title" content="Fermento — Gestionale per birrifici artigianali">
+  <meta property="og:description" content="Magazzino, produzione e vendite. Tutto sul tuo computer, senza canoni mensili.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/screenshot.png">
+  <title>Fermento — Gestionale per birrifici artigianali</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">FERMENTO</a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+      <label for="nav-toggle" class="hamburger" aria-label="Apri menu">
+        <span></span><span></span><span></span>
+      </label>
+      <nav class="main-nav" aria-label="Navigazione principale">
+        <ul>
+          <li><a href="#cosa-fa">Cosa fa</a></li>
+          <li><a href="#bira">Bira AI</a></li>
+          <li><a href="#percorso">Il percorso</a></li>
+          <li><a href="#contatti">Come iniziare</a></li>
+        </ul>
+      </nav>
+      <a href="#demo" class="btn btn-primary header-cta">Guarda la demo</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =============================================
+         HERO
+         ============================================= -->
+    <section class="hero" id="hero">
+      <video class="hero-bg-video" autoplay muted loop playsinline>
+        <source src="assets/bg-hd.mp4" type="video/mp4">
+      </video>
+      <div class="container">
+        <div class="hero-inner">
+
+          <div class="hero-content">
+            <span class="hero-kicker">Gestionale per birrifici artigianali</span>
+            <h1>Il software che il tuo birrificio aspettava.</h1>
+            <p class="hero-sub">Magazzino, produzione e vendite. Tutto sul tuo computer, senza canoni mensili.</p>
+            <div class="hero-ctas">
+              <a href="https://wa.me/PLACEHOLDER_NUMERO" class="btn btn-primary btn-lg">
+                Parla con noi su WhatsApp
+              </a>
+              <a href="#demo" class="btn btn-secondary">Guarda la demo</a>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-screenshot-wrap">
+              <img src="assets/screenshot.png" alt="Dashboard di Fermento — magazzino, produzione e vendite in un'unica schermata">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- BEER TUBE -->
+    <div class="beer-tube-wrap" aria-hidden="true">
+      <div class="beer-tube">
+        <div class="beer-liquid">
+          <div class="beer-bubbles"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================
+         COSA FA — 3 pilastri
+         ============================================= -->
+    <section class="pillars" id="cosa-fa">
+      <div class="container">
+        <div class="pillars-header">
+          <div data-reveal>
+            <span class="section-kicker">01 / Cosa fa</span>
+            <h2 class="section-title">Tutto quello che serve per gestire un birrificio.</h2>
+            <p class="section-desc">Dalla ricezione delle materie prime alla vendita dell'ultima bottiglia. Un unico software, sul tuo computer, senza abbonamenti.</p>
+          </div>
+        </div>
+        <div class="pillars-grid">
+
+          <article class="pillar" data-reveal data-delay="1">
+            <span class="pillar-num">01</span>
+            <h3>Magazzino sotto controllo</h3>
+            <p>Materie prime e materiali di confezionamento per lotto, con scadenze e giacenze sempre aggiornate. Soglie di riordino automatiche: sai prima tu del fornitore quando stai per finire un malto.</p>
+          </article>
+
+          <article class="pillar" data-reveal data-delay="2">
+            <span class="pillar-num">02</span>
+            <h3>Produzione tracciata</h3>
+            <p>Ogni cotta scarica le materie prime in automatico dai lotti più vecchi. Ricette con storico completo: modifichi oggi, le cotte passate restano com'erano. Vedi in tempo reale quante cotte puoi avviare.</p>
+          </article>
+
+          <article class="pillar" data-reveal data-delay="3">
+            <span class="pillar-num">03</span>
+            <h3>Vendite e clienti</h3>
+            <p>Anagrafica clienti con storico acquisti, giacenze del prodotto finito per lotto e formato. Bottiglie, fusti, omaggi: ogni uscita tracciata e collegata alla cotta di origine.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         BIRA AI
+         ============================================= -->
+    <section class="bira" id="bira">
+      <div class="container">
+
+        <!-- Header centrato -->
+        <div class="bira-header" data-reveal>
+          <span class="section-kicker">02 / Assistente AI</span>
+          <h2 class="section-title">Conosci Bira.</h2>
+          <p class="bira-intro">Bira è l'assistente AI integrato in Fermento. Falle una domanda in italiano e risponde leggendo i tuoi dati in tempo reale — giacenze, cotte, clienti, scadenze, vendite.</p>
+        </div>
+
+        <!-- Mockup centrato -->
+        <div class="bira-mockup-wrap" data-reveal>
+            <div class="bira-mockup" aria-hidden="true">
+
+              <!-- Header -->
+              <div class="bm-header">
+                <div class="bm-hdr-left">
+                  <div class="bm-avatar">✦</div>
+                  <div class="bm-hdr-info">
+                    <span class="bm-name">Bira</span>
+                    <span class="bm-status">Online · llama3.2</span>
+                  </div>
+                </div>
+                <span class="bm-badge">Locale</span>
+              </div>
+
+              <!-- Messaggi -->
+              <div class="bm-messages">
+
+                <div class="bm-msg bm-msg-user">
+                  <div class="bm-bubble-user">Quante cotte di Bionda posso fare con le scorte attuali?</div>
+                </div>
+
+                <div class="bm-toolcall">
+                  <span class="bm-tool-name">leggi_giacenze_materie_prime</span>
+                  <span class="bm-tool-ok">ok</span>
+                </div>
+
+                <div class="bm-msg bm-msg-assistant">
+                  <div class="bm-assistant-lbl">✦ Bira · llama3.2</div>
+                  <div class="bm-bubble-assistant">Puoi avviare <b>3 cotte</b> di Bionda. L'ingrediente limitante è il luppolo Cascade: ne hai 2,4 kg su 2,8 kg richiesti per cotta.</div>
+                </div>
+
+                <div class="bm-msg bm-msg-user">
+                  <div class="bm-bubble-user">Quali lotti di malto scadono entro 30 giorni?</div>
+                </div>
+
+                <div class="bm-toolcall">
+                  <span class="bm-tool-name">leggi_scadenze_materie_prime</span>
+                  <span class="bm-tool-ok">ok</span>
+                </div>
+
+                <div class="bm-msg bm-msg-assistant">
+                  <div class="bm-assistant-lbl">✦ Bira · llama3.2</div>
+                  <div class="bm-bubble-assistant">1 lotto in scadenza: <b>Malto Pale Ale</b> (F-2025-011), scade il 12/06/2026. Hai ancora 18 kg — usali nella prossima cotta per non sprecarli.</div>
+                </div>
+
+              </div>
+
+              <!-- Input -->
+              <div class="bm-footer">
+                <div class="bm-input-field">Scrivi qui… (Invio per inviare)</div>
+                <div class="bm-send-btn">↑</div>
+              </div>
+
+            </div>
+          </div>
+
+        <!-- Sotto: modalità + avvisi + disclaimer -->
+        <div class="bira-bottom">
+          <article class="mode-card">
+            <span class="mode-label">Locale</span>
+            <h3>Modalità Locale</h3>
+            <p>Bira gira sul tuo PC con Ollama. Nessun dato esce dal birrificio. Niente cloud, niente connessione obbligatoria.</p>
+          </article>
+          <article class="mode-card">
+            <span class="mode-label">Cloud</span>
+            <h3>Modalità Cloud</h3>
+            <p>Connessione a Groq per risposte più veloci e ragionamenti più complessi. I dati sensibili — clienti e ricette — non vengono mai inviati.</p>
+          </article>
+          <div class="bira-avvisi-box">
+            <span class="avvisi-label">Avvisi intelligenti</span>
+            <p>Bira non aspetta che tu faccia una domanda. Ogni volta che apri Fermento analizza magazzino, scadenze e clienti e ti presenta le raccomandazioni più urgenti, ordinate per priorità.</p>
+          </div>
+          <p class="bira-disclaimer">
+            // Bira può solo leggere: non modifica nulla senza il tuo consenso.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         FUNZIONALITA
+         ============================================= -->
+    <section class="features" id="funzionalita">
+      <div class="container">
+        <div data-reveal>
+          <span class="section-kicker">03 / Funzionalita</span>
+          <h2 class="section-title">Tutte le funzionalita</h2>
+        </div>
+        <div class="features-list">
+
+          <div class="frow" data-reveal data-delay="1">
+            <div class="frow-name">Avvisi automatici</div>
+            <div class="frow-desc">Scorte basse, lotti in scadenza (materie prime e prodotto finito), clienti inattivi, cotte non producibili. La dashboard li mostra ogni volta che apri il programma — ordinati per priorità.</div>
+          </div>
+
+          <div class="frow" data-reveal data-delay="2">
+            <div class="frow-name">Versioning ricette</div>
+            <div class="frow-desc">Modifica le ricette liberamente. Le cotte passate conservano la versione originale: sai esattamente con cosa hai prodotto ogni singolo lotto, anche anni dopo.</div>
+          </div>
+
+          <div class="frow" data-reveal data-delay="3">
+            <div class="frow-name">Scarico FIFO automatico</div>
+            <div class="frow-desc">A ogni cotta e a ogni vendita, Fermento usa per primo il lotto più vecchio. Nessun ingrediente dimenticato in fondo al magazzino, nessuna scadenza persa.</div>
+          </div>
+
+          <div class="frow" data-reveal data-delay="4">
+            <div class="frow-name">Backup automatici</div>
+            <div class="frow-desc">Copia giornaliera del database nella tua cartella Google Drive o Dropbox. 30 backup ruotati, nessuna azione richiesta da parte tua.</div>
+          </div>
+
+          <div class="frow" data-reveal data-delay="5">
+            <div class="frow-name">Aggiornamenti automatici</div>
+            <div class="frow-desc">Nuove versioni si installano da sole all'avvio. Nessun file da scaricare, nessuna procedura tecnica, nessuna interruzione.</div>
+          </div>
+
+          <div class="frow" data-reveal data-delay="6">
+            <div class="frow-name">Report filtrabili</div>
+            <div class="frow-desc">Produzione per periodo, vendite per cliente, vendite per birra, trend mensili, omaggi. Filtra per qualsiasi intervallo di date.</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         PER CHI
+         ============================================= -->
+    <section class="perchi">
+      <div class="container">
+        <div class="perchi-inner">
+          <div class="perchi-content">
+            <div data-reveal>
+              <span class="section-kicker">04 / Per chi</span>
+              <h2 class="section-title">Per birrifici artigianali italiani</h2>
+            </div>
+            <p class="perchi-lead" data-reveal>
+              Se gestisci il tuo birrificio tra <strong>Excel, quaderni e WhatsApp</strong> — e l'idea di un gestionale da <strong>migliaia di euro l'anno</strong> ti sembra fuori scala — Fermento è pensato per te.
+            </p>
+            <div class="badges" data-reveal>
+              <div class="badge">Single-user, sul tuo PC</div>
+              <div class="badge">Nessun cloud obbligatorio</div>
+              <div class="badge">Nessun abbonamento</div>
+            </div>
+          </div>
+          <div class="perchi-visual" data-reveal>
+            <div class="perchi-icon-wrap">
+              <img src="assets/favicon.svg" alt="Fermento">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         IL PERCORSO — workflow software
+         ============================================= -->
+    <section class="workflow" id="percorso">
+      <div class="container">
+        <div class="workflow-header">
+          <div data-reveal>
+            <span class="section-kicker">05 / Il percorso</span>
+            <h2 class="section-title">Dal primo sacco di malto all'ultima bottiglia venduta.</h2>
+            <p class="section-desc">Come funziona Fermento dall'interno: ogni step del processo e tracciato e collegato al precedente.</p>
+          </div>
+          <div class="workflow-header-visual" data-reveal data-delay="1">
+            <img src="assets/malt.jpg" alt="Mani di un birraio con malto d'orzo" loading="lazy">
+          </div>
+        </div>
+        <ol class="workflow-steps" aria-label="Percorso del processo produttivo">
+
+          <li class="wstep" data-reveal data-delay="1">
+            <div class="wstep-num" aria-hidden="true">01</div>
+            <div class="wstep-body">
+              <h3>Inserisci le materie prime</h3>
+              <p>Ogni carico diventa un lotto: malto, luppolo, lievito, materiali di confezionamento. Registri quantita, fornitore, numero lotto e data di scadenza. Fermento calcola le soglie di riordino in automatico in base al consumo delle cotte precedenti.</p>
+            </div>
+          </li>
+
+          <li class="wstep" data-reveal data-delay="2">
+            <div class="wstep-num" aria-hidden="true">02</div>
+            <div class="wstep-body">
+              <h3>Pianifica la produzione</h3>
+              <p>Prima di avviare una cotta, Fermento ti mostra quante ne puoi produrre con le giacenze attuali e quale ingrediente è il collo di bottiglia. Scegli la ricetta, confermi: le materie prime vengono scaricate in automatico partendo dal lotto piu vecchio.</p>
+            </div>
+          </li>
+
+          <li class="wstep" data-reveal data-delay="3">
+            <div class="wstep-num" aria-hidden="true">03</div>
+            <div class="wstep-body">
+              <h3>Confeziona il prodotto finito</h3>
+              <p>A fine cotta registri litri prodotti, scarti e confezionamento. Fermento crea il lotto di prodotto finito con la sua data di scadenza. Le giacenze di bottiglie e fusti si aggiornano in tempo reale per ogni formato.</p>
+            </div>
+          </li>
+
+          <li class="wstep" data-reveal data-delay="4">
+            <div class="wstep-num" aria-hidden="true">04</div>
+            <div class="wstep-body">
+              <h3>Registra le vendite</h3>
+              <p>Collega la vendita al cliente e seleziona i prodotti. Fermento propone i lotti con scadenza piu vicina, scala le giacenze e aggiorna lo storico cliente. Supporta bottiglie, fusti, altri prodotti e omaggi.</p>
+            </div>
+          </li>
+
+          <li class="wstep" data-reveal data-delay="5">
+            <div class="wstep-num" aria-hidden="true">05</div>
+            <div class="wstep-body">
+              <h3>Monitora e analizza</h3>
+              <p>La dashboard mostra ogni mattina lo stato del birrificio: avvisi attivi, cotte in corso, lotti in scadenza. I report coprono produzione, vendite per cliente, trend mensili e omaggi, filtrabili per qualsiasi intervallo di date.</p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- =============================================
+         DEMO (placeholder)
+         ============================================= -->
+    <section class="demo" id="demo">
+      <div class="container">
+        <div data-reveal>
+          <span class="section-kicker">06 / Demo</span>
+          <h2 class="section-title">Guarda Fermento in azione</h2>
+        </div>
+        <div class="demo-frame" data-reveal>
+          <!--
+            PLACEHOLDER DEMO — Sostituire con UNO di questi due:
+
+            OPZIONE A — Embed Arcade:
+            <iframe src="URL_ARCADE_QUI" allowfullscreen
+                    style="width:100%; height:100%; border:0;"></iframe>
+
+            OPZIONE B — Video locale:
+            <video controls poster="assets/video-poster.jpg" style="width:100%; height:100%;">
+              <source src="assets/demo.mp4" type="video/mp4">
+            </video>
+          -->
+          <div class="demo-placeholder">
+            Demo in arrivo. Nel frattempo, scrivici per una demo dal vivo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         PERCHE SCEGLIERE FERMENTO — 2x2 grid
+         ============================================= -->
+    <section class="perche">
+      <div class="container">
+        <div class="perche-inner">
+          <div class="perche-main">
+            <div data-reveal>
+              <span class="section-kicker">07 / Perche</span>
+              <h2 class="section-title">Perche scegliere Fermento</h2>
+            </div>
+            <div class="perche-grid" data-reveal>
+
+          <div class="perche-card" data-num="01">
+            <strong>I tuoi dati restano tuoi</strong>
+            <p>Database SQLite sul tuo PC. Niente cloud forzato, niente lock-in, niente abbonamento a un servizio che potrebbe sparire.</p>
+          </div>
+
+          <div class="perche-card" data-num="02">
+            <strong>Nessun canone mensile</strong>
+            <p>Una licenza, una volta. Gli aggiornamenti sono inclusi nel primo anno. Il costo del software non scala con il tuo volume.</p>
+          </div>
+
+          <div class="perche-card" data-num="03">
+            <strong>Sviluppato con un team di birrai</strong>
+            <p>Ogni funzione nasce da un problema reale segnalato da chi usa il software ogni giorno. Non da product manager lontani dal birrificio.</p>
+          </div>
+
+          <div class="perche-card" data-num="04">
+            <strong>Cresce con te</strong>
+            <p>Aggiungi birre, ricette, formati, clienti senza limiti. Soglie, scadenze e configurazioni si cambiano da interfaccia, senza assistenza tecnica.</p>
+          </div>
+
+            </div>
+          </div>
+          <div class="perche-visual" data-reveal>
+            <img src="assets/tanks.jpg" alt="Serbatoi di fermentazione in un birrificio artigianale" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         COME INIZIARE
+         ============================================= -->
+    <section class="iniziare" id="contatti">
+      <div class="container">
+        <div class="iniziare-inner">
+
+          <div class="iniziare-visual" data-reveal>
+            <img src="assets/fusti.jpg" alt="Fusti di birra artigianale pronti per la consegna" class="iniziare-photo" loading="lazy">
+          </div>
+
+          <div class="iniziare-content">
+            <div data-reveal>
+              <span class="section-kicker">08 / Come iniziare</span>
+              <h2 class="section-title">Tre passi per partire.</h2>
+            </div>
+            <div class="iniziare-steps">
+
+              <div class="istep" data-reveal data-delay="1">
+                <div class="istep-num">01</div>
+                <div class="istep-body">
+                  <h3>Demo — Ti facciamo vedere</h3>
+                  <p>Ci sentiamo su WhatsApp, fissiamo una call di 30 minuti. Vedi Fermento dal vivo sul tuo computer e capisci se fa al caso tuo.</p>
+                </div>
+              </div>
+
+              <div class="istep" data-reveal data-delay="2">
+                <div class="istep-num">02</div>
+                <div class="istep-body">
+                  <h3>Setup guidato</h3>
+                  <p>Installiamo Fermento, attiviamo la tua licenza, inseriamo le prime birre e ricette. Configuriamo il backup automatico. Una mezz'ora insieme e sei operativo.</p>
+                </div>
+              </div>
+
+              <div class="istep" data-reveal data-delay="3">
+                <div class="istep-num">03</div>
+                <div class="istep-body">
+                  <h3>Supporto diretto</h3>
+                  <p>Aggiornamenti automatici, nessun intervento tecnico richiesto. Se hai un dubbio scrivi su WhatsApp — rispondo io.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================
+         CTA FINALE
+         ============================================= -->
+    <section class="cta-finale">
+      <video class="cta-bg-video" autoplay muted loop playsinline preload="none">
+        <source src="assets/bg-portrait.mp4" type="video/mp4">
+      </video>
+      <div class="container">
+        <div class="cta-finale-inner" data-reveal>
+          <div class="cta-app-icon">
+            <img src="assets/favicon.svg" alt="Fermento">
+          </div>
+          <h2>Pronti per una demo?</h2>
+          <p class="cta-sub">Scrivici su WhatsApp, ti rispondiamo entro 24 ore.</p>
+          <a href="https://wa.me/PLACEHOLDER_NUMERO" class="btn btn-primary btn-lg">
+            Scrivici su WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <p><span class="footer-brand">FERMENTO</span> v1.2.0</p>
+      <p>© 2026 — Tutti i diritti riservati</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.main-nav a').forEach(function(l) {
+      l.addEventListener('click', function() {
+        document.getElementById('nav-toggle').checked = false;
+      });
+    });
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('[data-reveal]').forEach(function(el) {
+      observer.observe(el);
+    });
+
+    var vidObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var v = e.target;
+          v.load();
+          v.play().catch(function(){});
+          vidObserver.unobserve(v);
+        }
+      });
+    }, { rootMargin: '300px' });
+
+    document.querySelectorAll('video[preload="none"]').forEach(function(v) {
+      vidObserver.observe(v);
+    });
+  </script>
+
+</body>
+</html>
