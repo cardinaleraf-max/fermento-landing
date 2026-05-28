@@ -228,6 +228,9 @@ header {
   padding: 72px 0 60px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .hero::after {
   content: '';
@@ -1234,11 +1237,21 @@ footer p {
   h2 { font-size: 38px; }
   section { padding: 88px 0; }
 
-  .hero { padding: 96px 0 80px; }
+  .hero {
+    padding: 96px 0 80px;
+    min-height: calc(100vh - 58px - 54px);
+    justify-content: center;
+  }
+  .hero .container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
   .hero-inner {
     flex-direction: row;
     align-items: center;
     gap: 64px;
+    width: 100%;
   }
   .hero-content { flex: 0 0 auto; max-width: 480px; }
   .hero-visual  { flex: 1; min-width: 0; }
@@ -1293,6 +1306,17 @@ footer p {
 
 @media (min-width: 768px) {
   .header-cta { display: inline-flex; }
+}
+
+/* ============================================
+   LARGE DESKTOP (1400px+)
+   ============================================ */
+@media (min-width: 1400px) {
+  h1 { font-size: clamp(66px, 5vw, 80px); }
+  h2 { font-size: clamp(38px, 3vw, 48px); }
+  .hero-sub { font-size: clamp(19px, 1.4vw, 22px); }
+  .hero-content { max-width: 540px; }
+  .container { max-width: 1240px; }
 }
 
 /* ============================================
