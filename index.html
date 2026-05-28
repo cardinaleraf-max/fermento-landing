@@ -516,7 +516,20 @@
     document.querySelectorAll('video[preload="none"]').forEach(function(v) {
       vidObserver.observe(v);
     });
-  </script>
+
+    var demoVideo = document.querySelector('.demo-frame video');
+    if (demoVideo) {
+      demoVideo.addEventListener('ended', function() {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else if (document.webkitFullscreenElement) {
+          document.webkitExitFullscreen();
+        } else if (demoVideo.webkitDisplayingFullscreen) {
+          demoVideo.webkitExitFullScreen();
+        }
+      });
+    }
+</script>
 
 </body>
 </html>
