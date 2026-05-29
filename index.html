@@ -481,6 +481,46 @@
     </section>
 
     <!-- =============================================
+         RICHIEDI DEMO
+         ============================================= -->
+    <section class="richiedi-demo" id="richiedi-demo">
+      <div class="container">
+        <div data-reveal>
+          <span class="section-kicker">09 / Demo gratuita</span>
+          <h2 class="section-title">Richiedi la demo gratuita</h2>
+          <p class="section-desc">Lascia i tuoi dati e ti invio il link per scaricare Fermento Demo, versione completa con dati di esempio. Nessun impegno.</p>
+        </div>
+        <form class="demo-form" id="demo-form" novalidate data-reveal>
+          <input type="hidden" name="access_key" value="dd977f78-3dd6-40b0-ae47-dfd6c9418d5e">
+          <input type="hidden" name="subject" value="Nuova richiesta demo Fermento">
+          <input type="checkbox" name="botcheck" style="display:none">
+          <div class="form-group">
+            <label for="f-name">Nome e cognome</label>
+            <input type="text" id="f-name" name="name" required placeholder="Mario Rossi">
+          </div>
+          <div class="form-group">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" required placeholder="mario@birrificio.it">
+          </div>
+          <div class="form-group">
+            <label for="f-birrificio">Nome birrificio</label>
+            <input type="text" id="f-birrificio" name="birrificio" required placeholder="Birrificio della Valle">
+          </div>
+          <div class="form-group">
+            <label for="f-telefono">Telefono <span class="label-opt">(opzionale)</span></label>
+            <input type="tel" id="f-telefono" name="telefono" placeholder="+39 333 1234567">
+          </div>
+          <div class="form-group">
+            <label for="f-note">Note <span class="label-opt">(opzionale)</span></label>
+            <textarea id="f-note" name="note" rows="4" placeholder="Domande o richieste particolari"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" id="demo-submit">Richiedi la demo</button>
+        </form>
+        <div class="form-msg" id="form-msg" role="alert"></div>
+      </div>
+    </section>
+
+    <!-- =============================================
          CTA FINALE
          ============================================= -->
     <section class="cta-finale">
@@ -492,8 +532,8 @@
           <div class="cta-app-icon">
             <img src="assets/favicon.svg" alt="Fermento">
           </div>
-          <h2>Pronti per una demo?</h2>
-          <p class="cta-sub">Scrivici su WhatsApp, ti rispondiamo entro 24 ore.</p>
+          <h2>Hai bisogno di altre informazioni?</h2>
+          <p class="cta-sub">Scrivici su WhatsApp per qualsiasi domanda, ti rispondiamo entro 24 ore.</p>
           <a href="https://wa.me/PLACEHOLDER_NUMERO" class="btn btn-primary btn-lg">
             Scrivici su WhatsApp
           </a>
@@ -574,6 +614,14 @@
         demoVideo.controls = false;
         demoVideo.currentTime = 0.03;
         demoPlayBtn.classList.remove('is-hidden');
+        var richiediDemo = document.getElementById('richiedi-demo');
+        if (richiediDemo) {
+          setTimeout(function() {
+            richiediDemo.scrollIntoView({ behavior: 'smooth' });
+            richiediDemo.classList.add('is-highlighted');
+            setTimeout(function() { richiediDemo.classList.remove('is-highlighted'); }, 2500);
+          }, 400);
+        }
       });
 
       document.addEventListener('keydown', function(e) {
@@ -587,6 +635,42 @@
           demoVideo.play();
         } else {
           demoVideo.pause();
+        }
+      });
+    }
+
+    var demoForm = document.getElementById('demo-form');
+    var formMsg = document.getElementById('form-msg');
+    var demoSubmit = document.getElementById('demo-submit');
+
+    if (demoForm) {
+      demoForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var payload = {};
+        new FormData(demoForm).forEach(function(val, key) { payload[key] = val; });
+        demoSubmit.disabled = true;
+        demoSubmit.textContent = 'Invio in corso...';
+        formMsg.className = 'form-msg';
+        formMsg.textContent = '';
+        try {
+          var res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          var json = await res.json();
+          if (res.ok && json.success) {
+            demoForm.style.display = 'none';
+            formMsg.className = 'form-msg form-msg-success';
+            formMsg.textContent = 'Richiesta inviata. Ti invio il link della demo via email entro 24 ore.';
+          } else {
+            throw new Error('Invio fallito');
+          }
+        } catch(err) {
+          demoSubmit.disabled = false;
+          demoSubmit.textContent = 'Richiedi la demo';
+          formMsg.className = 'form-msg form-msg-error';
+          formMsg.textContent = 'Si è verificato un errore. Riprova o scrivici su WhatsApp.';
         }
       });
     }
