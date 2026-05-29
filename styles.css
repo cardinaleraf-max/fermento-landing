@@ -747,29 +747,52 @@ header {
 
 /* ===== DEMO ===== */
 .demo { background: var(--bg-alt); }
-.demo-frame { max-width: 800px; margin: 0 auto; }
-.demo-placeholder {
+.demo-frame { margin: 0 auto; }
+.demo-video-wrap {
+  position: relative;
   aspect-ratio: 16 / 9;
-  background: var(--bg);
-  border: 1px solid rgba(232, 160, 32, 0.25);
+  background: #000;
   border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(232, 160, 32, 0.15);
+  cursor: pointer;
+}
+.demo-video-wrap video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.demo-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(232, 160, 32, 0.92);
+  border: none;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  text-align: center;
-  padding: 24px;
-  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, opacity 0.25s;
+  z-index: 2;
 }
-.demo-placeholder::before {
-  content: '▶';
-  font-size: 24px;
-  color: var(--accent);
-  opacity: 0.35;
+.demo-play-btn:hover {
+  background: var(--accent-hover);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.demo-play-btn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.demo-play-btn svg {
+  width: 32px;
+  height: 32px;
+  color: #0C0C14;
+  margin-left: 4px;
 }
 
 /* ===== PERCHE — 2x2 grid ===== */

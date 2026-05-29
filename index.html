@@ -365,18 +365,26 @@
     </section>
 
     <!-- =============================================
-         DEMO (placeholder)
+         DEMO
          ============================================= -->
     <section class="demo" id="demo">
       <div class="container">
         <div data-reveal>
           <span class="section-kicker">06 / Demo</span>
-          <h2 class="section-title">Guarda Fermento in azione</h2>
+          <h2 class="section-title">Prima lo vedi. Poi decidi.</h2>
+          <p class="section-desc">Un giro completo tra magazzino, cotte e vendite — su dati reali, senza filtri.</p>
         </div>
         <div class="demo-frame" data-reveal>
-          <video controls poster="assets/screenshot.png" style="width:100%; height:100%; display:block;">
-            <source src="assets/demo.mp4" type="video/mp4">
-          </video>
+          <div class="demo-video-wrap" id="demo-video-wrap">
+            <video id="demo-video" preload="metadata">
+              <source src="assets/demo.mp4" type="video/mp4">
+            </video>
+            <button class="demo-play-btn" id="demo-play-btn" aria-label="Riproduci la demo">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -538,15 +546,47 @@
       vidObserver.observe(v);
     });
 
-    var demoVideo = document.querySelector('.demo-frame video');
-    if (demoVideo) {
+    var demoVideo = document.getElementById('demo-video');
+    var demoPlayBtn = document.getElementById('demo-play-btn');
+
+    if (demoVideo && demoPlayBtn) {
+      demoVideo.addEventListener('loadedmetadata', function() {
+        demoVideo.currentTime = 0.03;
+      });
+
+      demoPlayBtn.addEventListener('click', function() {
+        demoVideo.controls = true;
+        demoVideo.play();
+      });
+
+      demoVideo.addEventListener('play', function() {
+        demoPlayBtn.classList.add('is-hidden');
+      });
+
+      demoVideo.addEventListener('pause', function() {
+        if (!demoVideo.ended) demoPlayBtn.classList.remove('is-hidden');
+      });
+
       demoVideo.addEventListener('ended', function() {
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        } else if (document.webkitFullscreenElement) {
-          document.webkitExitFullscreen();
-        } else if (demoVideo.webkitDisplayingFullscreen) {
-          demoVideo.webkitExitFullScreen();
+        if (document.fullscreenElement) document.exitFullscreen().catch(function(){});
+        else if (document.webkitFullscreenElement) document.webkitExitFullscreen();
+        else if (demoVideo.webkitDisplayingFullscreen) demoVideo.webkitExitFullScreen();
+        demoVideo.controls = false;
+        demoVideo.currentTime = 0.03;
+        demoPlayBtn.classList.remove('is-hidden');
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.code !== 'Space') return;
+        var active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+        if (demoVideo.readyState < 1) return;
+        e.preventDefault();
+        if (demoVideo.paused) {
+          if (!demoVideo.controls) demoVideo.controls = true;
+          demoVideo.play();
+        } else {
+          demoVideo.pause();
         }
       });
     }
