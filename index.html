@@ -511,6 +511,15 @@
             <input type="tel" id="f-telefono" name="telefono" placeholder="+39 333 1234567">
           </div>
           <div class="form-group">
+            <label>Sistema operativo</label>
+            <div class="os-picker">
+              <input type="radio" id="os-windows" name="sistema_operativo" value="Windows" required>
+              <label for="os-windows">Windows</label>
+              <input type="radio" id="os-mac" name="sistema_operativo" value="Mac" required>
+              <label for="os-mac">Mac</label>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="f-note">Note <span class="label-opt">(opzionale)</span></label>
             <textarea id="f-note" name="note" rows="4" placeholder="Domande o richieste particolari"></textarea>
           </div>
@@ -646,6 +655,11 @@
     if (demoForm) {
       demoForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+        if (!demoForm.querySelector('input[name="sistema_operativo"]:checked')) {
+          formMsg.className = 'form-msg form-msg-error';
+          formMsg.textContent = 'Seleziona il sistema operativo prima di inviare.';
+          return;
+        }
         var payload = {};
         new FormData(demoForm).forEach(function(val, key) { payload[key] = val; });
         demoSubmit.disabled = true;
