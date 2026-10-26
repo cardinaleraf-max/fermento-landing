@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=JetBrains+Mono:wght@400;500&display=block" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  --bg:#09090c; --side:#0c0c14; --card:#101016; --card2:#14141b; --line:rgba(255,255,255,.06); --line2:rgba(255,255,255,.1);
+  --ink:#f3f1ec; --mut:#8a8a95; --dim:#5d5d68; --amber:#e8a020; --amber2:#f5b23a; --red:#e5655b; --green:#6dbf85; --field:#8fa055;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#06060a}
+body{font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.lucide{width:1em;height:1em;stroke-width:1.8;flex:none}
+#stage{position:absolute;inset:0;overflow:hidden;
+  background:radial-gradient(1200px 700px at 50% 120%,rgba(232,160,32,.10),transparent 60%),radial-gradient(900px 500px at 10% -10%,rgba(255,255,255,.04),transparent 60%),#06060a}
+.layer{position:absolute;inset:0}
+
+/* ---------- camera + window ---------- */
+#cam{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}
+#win{position:absolute;inset:0;border-radius:16px;overflow:hidden;background:var(--bg);
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 60px 120px -30px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.5)}
+.titlebar{height:34px;display:flex;align-items:center;gap:14px;padding:0 14px;background:#0e0e15;border-bottom:1px solid var(--line)}
+.titlebar .dots{display:flex;gap:7px}.titlebar .dots i{width:11px;height:11px;border-radius:50%;background:#2a2a34}
+.titlebar span{font-size:12px;color:var(--dim)}
+.app{position:absolute;top:34px;left:0;right:0;bottom:0;display:flex}
+.side{width:236px;flex:none;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column}
+.brand{padding:20px 22px 18px;border-bottom:1px solid var(--line)}
+.brand b{display:block;color:var(--amber);font-weight:700;letter-spacing:.24em;font-size:21px}
+.brand small{display:block;color:var(--dim);font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+.nav{padding:10px;display:flex;flex-direction:column;gap:2px;flex:1}
+.ni{white-space:nowrap;overflow:hidden;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-size:13.5px;color:#a3a3ad}
+.ni .lucide{width:15px;height:15px}
+.ni.on{background:rgba(232,160,32,.1);color:var(--amber)}
+.ng{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#45454f;font-weight:600;padding:14px 12px 4px}
+.side-foot{border-top:1px solid var(--line);padding:10px}
+.bira-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:#111118}
+.bira-btn .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(232,160,32,.15);color:var(--amber)}
+.bira-btn b{font-size:13px;display:block;line-height:1.1}.bira-btn small{font-size:11px;color:var(--dim)}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+.top{height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line)}
+.top h2{font-size:11px;letter-spacing:.22em;font-weight:600;color:#6b6b76}
+.top .theme{display:flex;gap:10px;color:#6b6b76}
+.screens{position:relative;flex:1}
+.scr{position:absolute;inset:0;padding:26px;opacity:0}
+.h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.sub{font-size:13px;color:var(--mut);margin-top:2px}
+.row{display:flex;gap:16px}
+.card{background:var(--card);border:1px solid var(--line2);border-radius:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1206;font-weight:600;font-size:13px;padding:9px 16px;border-radius:8px}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--ink)}
+.btn .lucide{width:15px;height:15px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:500;color:var(--mut);font-size:12.5px;padding:10px 14px;border-bottom:1px solid var(--line2)}
+td{padding:13px 14px;border-bottom:1px solid var(--line)}
+.num{font-variant-numeric:tabular-nums}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px}
+.p-ok{background:rgba(109,191,133,.12);color:#8fd3a3}.p-bad{background:rgba(229,101,91,.14);color:#f08a81}.p-am{background:rgba(232,160,32,.14);color:var(--amber2)}
+.mono{font-family:"JetBrains Mono",monospace;font-size:.92em}
+
+/* dashboard */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{padding:20px 20px 22px;min-height:132px}
+.kpi .kh{display:flex;justify-content:space-between;font-size:14px;color:#d6d4da}.kpi .kh .lucide{color:#6b6b76;width:17px;height:17px}
+.kpi b{display:block;font-size:34px;font-weight:600;margin-top:14px;line-height:1}
+.kpi p{font-size:14px;margin-top:12px;line-height:1.4;color:#d6d4da}.kpi p em{font-style:normal;color:var(--amber2)}
+.prod{margin-top:18px;padding:22px 24px}
+.prod .meter{display:inline-block;width:150px;height:6px;border-radius:3px;background:rgba(255,255,255,.07);margin-right:14px;vertical-align:middle;overflow:hidden}
+.prod .meter i{display:block;height:100%;background:var(--amber);border-radius:3px;width:0}
+tr.bad td{color:var(--red);background:rgba(229,101,91,.06)}tr.bad .meter i{background:var(--red)}
+
+/* magazzino */
+.mp{margin-top:18px;overflow:hidden}
+.mp tr.sel td{background:rgba(232,160,32,.06)}
+.lots{margin:0 14px 14px;padding:14px;border:1px solid var(--line2);border-radius:10px;background:#0c0c12;display:grid;gap:8px}
+.lot{display:grid;grid-template-columns:150px 1fr 140px 110px;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;background:#111118;position:relative}
+.lot.first{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.07)}
+.lot .tag{position:absolute;right:-1px;top:-11px}
+.minus{position:absolute;right:120px;color:var(--red);font-weight:600;font-size:14px;opacity:0}
+
+/* modal */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0}
+.modal{position:absolute;left:50%;top:50%;width:760px;margin-left:-380px;margin-top:-330px;padding:26px 28px;background:#0f0f16;border:1px solid var(--line2);border-radius:16px;box-shadow:0 40px 80px rgba(0,0,0,.7);opacity:0}
+.fields{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-top:18px}
+.f label{display:block;font-size:12px;color:var(--mut);margin-bottom:6px}
+.f div{border:1px solid var(--line2);border-radius:8px;padding:10px 12px;font-size:14px;background:#0b0b10}
+.ing{margin-top:18px;border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.ing td,.ing th{padding:10px 14px}
+.ing .edit{display:inline-block;min-width:70px;border:1px solid var(--line2);border-radius:6px;padding:4px 8px;background:#0b0b10}
+.ing .edit.focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(232,160,32,.18)}
+.ing s{color:var(--dim);margin-right:6px}
+.ing .add td{color:var(--green)}
+.note{margin-top:16px;display:flex;align-items:center;gap:10px;font-size:13.5px;color:#cfcbd3;padding:12px 14px;border-radius:10px;background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.25)}
+.note .lucide{color:var(--amber);width:17px;height:17px}
+.mfoot{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+
+/* vendite / fusti */
+.vt tr.new td{background:rgba(232,160,32,.07)}
+.kegs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.keg{padding:20px}
+.keg .kn{font-size:15px;font-weight:600}
+.keg .ks{font-size:12.5px;color:var(--mut)}
+.keg .kb{display:flex;align-items:baseline;gap:8px;margin-top:16px}
+.keg .kb b{font-size:38px;font-weight:600;color:var(--amber2);line-height:1}
+.keg .kb span{color:var(--mut);font-size:14px}
+.keg .btn{margin-top:16px;font-size:12px;padding:7px 12px}
+.keg.hl{border-color:rgba(232,160,32,.55);box-shadow:0 0 0 4px rgba(232,160,32,.08)}
+
+/* campo */
+.campo{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;margin-top:18px}
+.map{height:420px;border-radius:12px;overflow:hidden;background:linear-gradient(160deg,#1b1d12,#14160d);position:relative}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map path.f{fill:rgba(143,160,85,.18);stroke:var(--field);stroke-width:2.5}
+.map line{stroke:rgba(143,160,85,.45);stroke-width:1.5}
+.dl{display:grid;gap:0}
+.dl div{display:flex;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);font-size:14.5px}
+.dl dt{color:var(--mut)}
+
+/* maltazione */
+.malt{display:grid;grid-template-columns:300px 1fr;gap:18px;margin-top:18px}
+.phases{padding:16px;display:grid;gap:8px;align-content:start}
+.ph{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);font-size:14px}
+.ph .st{margin-left:auto}
+.ph.done .st{color:var(--green)}.ph.cur{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.06)}.ph.cur .st{color:var(--amber)}
+.chart{padding:20px 22px}
+.chart svg{width:100%;height:330px;overflow:visible}
+.chart .g line{stroke:rgba(255,255,255,.06)}
+.chart polyline{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.chart text{font-family:"JetBrains Mono",monospace;font-size:11px;fill:#6b6b76}
+.legend{display:flex;gap:18px;font-size:12.5px;color:var(--mut)}
+.legend i{display:inline-block;width:16px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.yields{display:flex;gap:16px;margin-top:6px}
+.yields div{flex:1;padding:14px 16px;border:1px solid var(--line);border-radius:10px}
+.yields small{display:block;font-size:12px;color:var(--mut)}.yields b{font-size:26px;font-weight:600}
+
+/* tracciabilità */
+.search{display:flex;gap:12px;margin-top:18px;align-items:center}
+.search .inp{flex:1;display:flex;align-items:center;gap:10px;border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:15px;background:#0b0b10}
+.search .inp .lucide{color:var(--mut)}
+.seg{display:inline-flex;padding:4px;border:1px solid var(--line2);border-radius:10px;gap:4px}
+.seg span{padding:7px 14px;border-radius:7px;font-size:13px;color:var(--mut)}.seg span.on{background:var(--amber);color:#1a1206;font-weight:600}
+.tree{margin-top:20px;padding:22px 26px;position:relative}
+.node{display:flex;align-items:center;gap:16px;padding:9px 0;position:relative}
+.node .ic{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#15151d;border:1px solid var(--line2);color:var(--amber);z-index:1}
+.node .ic .lucide{width:19px;height:19px}
+.node .tx{font-size:15px}.node .tx small{display:block;color:var(--mut);font-size:12.5px}
+.node .k{margin-left:auto;font-size:12.5px;color:var(--mut)}
+.trunk{position:absolute;left:46px;top:40px;width:2px;background:linear-gradient(var(--amber),rgba(143,160,85,.8));border-radius:2px}
+
+/* bira */
+.bira{position:absolute;right:22px;top:22px;bottom:22px;width:520px;background:#0f0f16;border:1px solid var(--line2);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.75);display:flex;flex-direction:column;overflow:hidden}
+.bh{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.bh .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(232,160,32,.15);color:var(--amber)}
+.bh b{display:block;font-size:15px}.bh small{font-size:12px;color:var(--dim)}
+.bb{flex:1;padding:20px 18px;display:flex;flex-direction:column;gap:12px}
+.mu{align-self:flex-end;max-width:85%;background:var(--amber);color:#1a1206;font-weight:500;padding:12px 15px;border-radius:14px 14px 4px 14px;font-size:15px}
+.tools{display:flex;gap:6px}
+.tools span{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--mut);border:1px solid var(--line2);padding:3px 9px;border-radius:6px;display:inline-flex;align-items:center;gap:6px}
+.tools span::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
+.mb{align-self:flex-start;max-width:92%;background:#1a1a23;border:1px solid var(--line);padding:13px 15px;border-radius:14px 14px 14px 4px;font-size:15px;line-height:1.5;color:#e6e3ea}
+.mb table{margin-top:8px;font-size:14px}.mb td{padding:7px 0;border-bottom:1px solid var(--line)}.mb td:last-child{text-align:right;color:var(--amber2);font-weight:600}
+.bi{margin:0 14px 14px;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-size:15px;color:var(--dim)}
+.bi .typed{color:var(--ink)}
+.bi .send{width:30px;height:30px;border-radius:8px;background:var(--amber);color:#1a1206;display:grid;place-items:center}
+.priv{position:absolute;left:40px;bottom:130px;width:640px;padding:22px 24px;background:rgba(15,15,22,.96);border:1px solid rgba(232,160,32,.4);border-radius:16px;box-shadow:0 30px 60px rgba(0,0,0,.7);opacity:0}
+.priv h4{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}
+.priv h4 .lucide{color:var(--amber);width:19px;height:19px}
+.pv{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;margin-top:16px;gap:6px}
+.pv .c{padding:12px 14px;border:1px solid var(--line2);border-radius:10px;font-size:14px}
+.pv .c small{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;font-family:"JetBrains Mono",monospace}
+.pv .c.code{border-color:rgba(232,160,32,.45)}.pv .c.code b{font-family:"JetBrains Mono",monospace;color:var(--amber2);font-weight:500}
+.pv .ar{color:var(--amber);display:grid;place-items:center}
+
+/* cursor */
+#cur{position:absolute;left:0;top:0;width:26px;height:26px;z-index:50;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}
+#ring{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid var(--amber);z-index:49;opacity:0}
+
+/* captions */
+#cap{position:absolute;left:0;right:0;bottom:46px;display:flex;justify-content:center;z-index:100}
+#cap span{max-width:1400px;text-align:center;font-size:34px;font-weight:500;line-height:1.3;padding:12px 26px;border-radius:14px;background:rgba(6,6,10,.78);color:#fff;backdrop-filter:blur(8px);letter-spacing:-.005em}
+#cap span:empty{display:none}
+
+/* intro / outro */
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.word{font-weight:700;letter-spacing:.32em;color:var(--amber);font-size:110px;padding-left:.32em}
+.word span{display:inline-block}
+.tagl{font-family:"Fraunces",serif;font-size:58px;font-weight:400;letter-spacing:-.01em;margin-top:34px;line-height:1.15}
+.tagl em{color:var(--amber);font-style:italic}
+.pillv{display:inline-flex;gap:10px;align-items:center;font-size:20px;padding:8px 18px 8px 8px;border:1px solid var(--line2);border-radius:999px;margin-bottom:46px;color:#d6d4da}
+.pillv b{font-family:"JetBrains Mono",monospace;font-weight:500;background:var(--amber);color:#1a1206;border-radius:999px;padding:3px 12px;font-size:16px}
+.cta{margin-top:46px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.cta .btn{font-size:24px;padding:16px 30px;border-radius:999px}
+.cta small{font-family:"JetBrains Mono",monospace;font-size:20px;color:var(--mut);letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- INTRO -->
+  <div class="layer" id="intro">
+    <div class="center">
+      <div class="pillv" id="i-pill"><b>v1.5</b>Novità: modulo agricolo</div>
+      <div class="word" id="i-word"></div>
+      <div class="tagl" id="i-tag1">Il gestionale per birrifici artigianali</div>
+      <div class="tagl" id="i-tag2" style="margin-top:6px"><em>e agricoli.</em></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="layer" id="applayer">
+    <div id="cam">
+      <div id="win">
+        <div class="titlebar"><span class="dots"><i></i><i></i><i></i></span><span>Fermento — Birrificio della Valle</span></div>
+        <div class="app">
+          <aside class="side">
+            <div class="brand"><b>FERMENTO</b><small>Birrificio della Valle</small></div>
+            <nav class="nav" id="nav">
+              <div class="ni" data-k="dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</div>
+              <div class="ni" data-k="mp"><i data-lucide="package"></i>Magazzino materie prime</div>
+              <div class="ni" data-k="conf"><i data-lucide="box"></i>Magazzino confezionamento</div>
+              <div class="ni" data-k="prod"><i data-lucide="flask-conical"></i>Produzione</div>
+              <div class="ni" data-k="pf"><i data-lucide="warehouse"></i>Prodotto finito</div>
+              <div class="ni" data-k="clienti"><i data-lucide="users"></i>Clienti</div>
+              <div class="ni" data-k="vendite"><i data-lucide="shopping-cart"></i>Vendite</div>
+              <div class="ni" data-k="report"><i data-lucide="bar-chart-3"></i>Report</div>
+              <div class="ng">Filiera agricola</div>
+              <div class="ni" data-k="campi"><i data-lucide="sprout"></i>Campi e semine</div>
+              <div class="ni" data-k="oper"><i data-lucide="tractor"></i>Operazioni di campo</div>
+              <div class="ni" data-k="racc"><i data-lucide="wheat"></i>Raccolte</div>
+              <div class="ni" data-k="cal"><i data-lucide="microscope"></i>Analisi e calibratura</div>
+              <div class="ni" data-k="malt"><i data-lucide="flame"></i>Maltazioni</div>
+              <div class="ni" data-k="trac"><i data-lucide="route"></i>Tracciabilità</div>
+              <div class="ng" style="padding-top:10px"></div>
+              <div class="ni" data-k="avvisi"><i data-lucide="bell"></i>Avvisi</div>
+              <div class="ni" data-k="imp"><i data-lucide="settings"></i>Impostazioni</div>
+            </nav>
+            <div class="side-foot"><div class="bira-btn" id="birabtn"><span class="av"><i data-lucide="sparkles"></i></span><div><b>Bira</b><small>Assistente AI</small></div></div></div>
+          </aside>
+          <div class="main">
+            <div class="top"><h2 id="crumb">DASHBOARD</h2><div class="theme"><i data-lucide="moon"></i><i data-lucide="sun"></i></div></div>
+            <div class="screens">
+
+              <!-- Dashboard -->
+              <div class="scr" id="s-dash">
+                <div class="kpis">
+                  <div class="card kpi" data-st="0"><div class="kh">Avvisi attivi<i data-lucide="triangle-alert"></i></div><b class="num" id="k1">0</b></div>
+                  <div class="card kpi" data-st="1"><div class="kh">Cotte in corso<i data-lucide="beer"></i></div><b class="num" id="k2">0</b></div>
+                  <div class="card kpi" data-st="2"><div class="kh">Prodotto in scadenza<i data-lucide="calendar-clock"></i></div><b class="num" id="k3">0</b></div>
+                  <div class="card kpi" data-st="3"><div class="kh">Suggerimento prossima cotta<i data-lucide="lightbulb"></i></div><p>Ti consiglio di produrre <em>Magda</em></p></div>
+                </div>
+                <div class="card prod" id="prodcard">
+                  <div class="h1" style="font-size:18px">Cotte producibili</div>
+                  <div class="sub">Stima in base alle giacenze materie prime e alla ricetta attiva</div>
+                  <table style="margin-top:14px">
+                    <tr><th style="padding-left:0">Birra</th><th>Cotte producibili</th><th>Ingrediente limitante</th></tr>
+                    <tr><td style="padding-left:0">Tempesta</td><td class="num"><span class="meter"><i data-w="100"></i></span>4</td><td>Malto Pilsner</td></tr>
+                    <tr><td style="padding-left:0">Magda</td><td class="num"><span class="meter"><i data-w="75"></i></span>3</td><td>Belgian Aromatic</td></tr>
+                    <tr><td style="padding-left:0">Scarlet</td><td class="num"><span class="meter"><i data-w="50"></i></span>2</td><td>Fermentis BE-256</td></tr>
+                    <tr class="bad"><td style="padding-left:0">Prima Luce</td><td class="num"><span class="meter"><i data-w="2"></i></span>0</td><td>Spalter</td></tr>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Magazzino MP -->
+              <div class="scr" id="s-mp">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end">
+                  <div><div class="h1">Magazzino materie prime</div><div class="sub">Giacenze per lotto, scadenze e soglie di riordino</div></div>
+                  <span class="btn"><i data-lucide="plus"></i>Nuovo carico</span>
+                </div>
+                <div class="card mp">
+                  <table>
+                    <tr><th>Materia prima</th><th>Categoria</th><th>Giacenza</th><th>Soglia</th><th>Stato</th></tr>
+                    <tr><td>Malto Pilsner</td><td>Malto</td><td class="num">412 kg</td><td class="num">100 kg</td><td><span class="pill p-ok">OK</span></td></tr>
+                    <tr id="mp-pale"><td>Malto Pale Ale</td><td>Malto</td><td class="num" id="pale-q">393 kg</td><td class="num">100 kg</td><td><span class="pill p-ok">OK</span></td></tr>
+                    <tr id="mp-lots-row"><td colspan="5" style="padding:0;border:0">
+                      <div id="lotswrap" style="overflow:hidden;height:0">
+                        <div class="lots">
+                          <div class="lot first" id="lot1"><span class="mono">F-2026-011</span><span style="color:var(--mut)">Malteria Bassa · scade 12/12/2026</span><b class="num" id="lot1q">18 kg</b><span class="pill p-am" id="lot1tag">Si usa per primo</span><span class="minus" id="lot1m">−18 kg · cotta M-26-14</span></div>
+                          <div class="lot"><span class="mono">F-2026-019</span><span style="color:var(--mut)">Malteria Bassa · scade 03/03/2027</span><b class="num">125 kg</b><span></span></div>
+                          <div class="lot"><span class="mono">F-2026-024</span><span style="color:var(--mut)">Malteria Bassa · scade 20/05/2027</span><b class="num">250 kg</b><span></span></div>
+                        </div>
+                      </div>
+                    </td></tr>
+                    <tr><td>Cascade</td><td>Luppolo</td><td class="num">3,2 kg</td><td class="num">2 kg</td><td><span class="pill p-ok">OK</span></td></tr>
+                    <tr><td>Spalter</td><td>Luppolo</td><td class="num">0,8 kg</td><td class="num">2 kg</td><td><span class="pill p-bad">Sotto soglia</span></td></tr>
+                    <tr><td>Fermentis BE-256</td><td>Lievito</td><td class="num">0,5 kg</td><td class="num">0,2 kg</td><td><span class="pill p-ok">OK</span></td></tr>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Produzione + modal -->
+              <div class="scr" id="s-prod">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end">
+                  <div><div class="h1">Produzione</div><div class="sub">Gestione cotte e confezionamento</div></div>
+                  <span class="btn" id="newcotta"><i data-lucide="plus"></i>Nuova cotta</span>
+                </div>
+                <div class="card" style="margin-top:18px">
+                  <table>
+                    <tr><th>Lotto</th><th>Birra</th><th>Data inizio</th><th>Stato</th><th>Bottiglie</th></tr>
+                    <tr><td class="mono">M-26-13</td><td>Tempesta</td><td>19/10/2026</td><td><span class="pill p-am">In corso</span></td><td>—</td></tr>
+                    <tr><td class="mono">M-26-12</td><td>Scarlet</td><td>06/10/2026</td><td><span class="pill p-ok">Confezionata</span></td><td class="num">960</td></tr>
+                    <tr><td class="mono">M-26-11</td><td>Magda</td><td>22/09/2026</td><td><span class="pill p-ok">Confezionata</span></td><td class="num">1.120</td></tr>
+                  </table>
+                </div>
+                <div class="dim" id="dim1"></div>
+                <div class="modal" id="modal">
+                  <div class="h1">Nuova cotta</div>
+                  <div class="fields">
+                    <div class="f"><label>Birra</label><div>Magda</div></div>
+                    <div class="f"><label>Lotto</label><div class="mono">M-26-14</div></div>
+                    <div class="f"><label>Data inizio</label><div>26/10/2026</div></div>
+                  </div>
+                  <table class="ing">
+                    <tr><th>Ingrediente</th><th>Quantità</th><th></th></tr>
+                    <tr><td>Malto Pilsner</td><td class="num">180 kg</td><td></td></tr>
+                    <tr><td>Malto Pale Ale</td><td class="num">40 kg</td><td></td></tr>
+                    <tr><td>Cascade</td><td class="num"><span class="edit" id="casc">2,8</span> kg</td><td id="casc-tag"></td></tr>
+                    <tr><td id="saaz">Saaz</td><td class="num">1,0 kg</td><td id="saaz-tag"></td></tr>
+                    <tr class="add" id="addrow" style="opacity:0"><td>+ Scorza d'arancia</td><td class="num">0,4 kg</td><td><span class="pill p-ok">aggiunto</span></td></tr>
+                  </table>
+                  <div class="note" id="note"><i data-lucide="info"></i>Modifiche valide solo per questa cotta. La ricetta resta com'è.</div>
+                  <div class="mfoot"><span class="btn ghost">Annulla</span><span class="btn" id="avvia">Avvia cotta</span></div>
+                </div>
+              </div>
+
+              <!-- Vendite -->
+              <div class="scr" id="s-vend">
+                <div style="display:flex;justify-content:space-between;align-items:flex-end">
+                  <div><div class="h1" id="vend-title">Vendite</div><div class="sub" id="vend-sub">Storico e registrazione vendite</div></div>
+                  <div class="row" style="gap:10px"><span class="btn ghost" id="fustibtn"><i data-lucide="cylinder"></i>Fusti in giro</span><span class="btn"><i data-lucide="plus"></i>Nuova vendita</span></div>
+                </div>
+                <div id="vend-list">
+                  <div class="card" style="margin-top:18px;overflow:hidden">
+                    <table class="vt">
+                      <tr><th>Data</th><th>Cliente</th><th>Prodotti</th><th>A rendere</th></tr>
+                      <tr class="new" id="vnew"><td>26/10/2026</td><td>Pub Il Luppolo</td><td>Magda · 4 fusti 20 L</td><td><span class="pill p-am">4 fusti</span></td></tr>
+                      <tr><td>24/10/2026</td><td>Enoteca Centrale</td><td>Scarlet · 48 bottiglie 33 cl</td><td>—</td></tr>
+                      <tr><td>22/10/2026</td><td>Trattoria Il Mulino</td><td>Tempesta · 2 fusti 30 L</td><td><span class="pill p-am">2 fusti</span></td></tr>
+                      <tr><td>20/10/2026</td><td>Bar Centrale</td><td>Magda · 1 fusto 20 L</td><td><span class="pill p-am">1 fusto</span></td></tr>
+                      <tr><td>18/10/2026</td><td>Omaggio · Festa del raccolto</td><td>Magda · 12 bottiglie 33 cl</td><td>—</td></tr>
+                    </table>
+                  </div>
+                </div>
+                <div id="fusti" style="opacity:0;position:absolute;left:26px;right:26px;top:96px">
+                  <div class="kegs">
+                    <div class="card keg hl" id="keg1"><div class="kn">Pub Il Luppolo</div><div class="ks">Ultimo movimento 26/10</div><div class="kb"><b class="num" id="kc1">0</b><span>fusti da 20 L</span></div><span class="btn ghost">Registra rientro</span></div>
+                    <div class="card keg"><div class="kn">Trattoria Il Mulino</div><div class="ks">Ultimo movimento 22/10</div><div class="kb"><b class="num" id="kc2">0</b><span>fusti da 30 L</span></div><span class="btn ghost">Registra rientro</span></div>
+                    <div class="card keg"><div class="kn">Bar Centrale</div><div class="ks">Ultimo movimento 20/10</div><div class="kb"><b class="num" id="kc3">0</b><span>fusto da 20 L</span></div><span class="btn ghost">Registra rientro</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campi -->
+              <div class="scr" id="s-campi">
+                <div class="h1">Campi e semine</div><div class="sub">Quaderno di campagna · stagione 2025/26</div>
+                <div class="campo">
+                  <div class="map card"><svg viewBox="0 0 700 420" preserveAspectRatio="none"><defs><clipPath id="fc"><path d="M60 70 L520 40 L650 250 L210 380 L70 300 Z"/></clipPath></defs><g clip-path="url(#fc)" id="rows"></g><path class="f" id="fpath" d="M60 70 L520 40 L650 250 L210 380 L70 300 Z" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg></div>
+                  <div class="card">
+                    <div style="padding:18px 18px 8px"><div class="h1" style="font-size:19px">Campo Le Coste</div><div class="sub">Località Valle · 4,2 ha</div></div>
+                    <dl class="dl">
+                      <div><dt>Coltura</dt><dd>Orzo distico</dd></div>
+                      <div><dt>Varietà</dt><dd>Planet</dd></div>
+                      <div><dt>Semina</dt><dd>24/10/2025</dd></div>
+                      <div><dt>Semente</dt><dd class="mono">SEM-25-03 · 760 kg</dd></div>
+                      <div><dt>Trattamenti</dt><dd>1 · carenza rispettata</dd></div>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Maltazioni -->
+              <div class="scr" id="s-malt">
+                <div class="h1">Maltazione <span class="mono" style="color:var(--amber)">MAL-26-04</span></div><div class="sub">Da orzo calibrato OC-26-11 · 9.800 kg</div>
+                <div class="malt">
+                  <div class="card phases">
+                    <div class="ph done"><i data-lucide="droplets"></i>Macerazione<span class="st"><i data-lucide="check"></i></span></div>
+                    <div class="ph done"><i data-lucide="sprout"></i>Germinazione<span class="st"><i data-lucide="check"></i></span></div>
+                    <div class="ph cur"><i data-lucide="flame"></i>Essiccazione<span class="st"><i data-lucide="loader"></i></span></div>
+                    <div class="ph"><i data-lucide="sparkles"></i>Post-essiccazione<span class="st"></span></div>
+                    <div class="ph"><i data-lucide="flask-conical"></i>Test di laboratorio<span class="st"></span></div>
+                  </div>
+                  <div class="card chart">
+                    <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:16px">Curve di essiccazione</b><div class="legend"><span><i style="background:#d97a35"></i>T entrata</span><span><i style="background:#e8a020"></i>T uscita</span><span><i style="background:#8fa055"></i>Umidità</span></div></div>
+                    <svg viewBox="0 0 900 330">
+                      <g class="g"><line x1="40" y1="20" x2="900" y2="20"/><line x1="40" y1="110" x2="900" y2="110"/><line x1="40" y1="200" x2="900" y2="200"/><line x1="40" y1="290" x2="900" y2="290"/></g>
+                      <polyline id="c1" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke="#d97a35" points="40,200 183,185 326,170 470,150 613,125 756,100 900,45"/>
+                      <polyline id="c2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke="#e8a020" points="40,270 183,255 326,232 470,200 613,168 756,138 900,80"/>
+                      <polyline id="c3" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke="#8fa055" points="40,40 183,100 326,170 470,220 613,252 756,270 900,278"/>
+                      <g><text x="111" y="318" text-anchor="middle">Curva umida</text><text x="254" y="318" text-anchor="middle">Calo peso</text><text x="398" y="318" text-anchor="middle">Curva 2</text><text x="541" y="318" text-anchor="middle">Curva 3</text><text x="684" y="318" text-anchor="middle">Curva 4</text><text x="828" y="318" text-anchor="middle">Colpo di fuoco</text></g>
+                    </svg>
+                    <div class="yields"><div><small>Resa di maltazione</small><b class="num" id="y1">0%</b></div><div><small>Resa complessiva</small><b class="num" id="y2">0%</b></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tracciabilità -->
+              <div class="scr" id="s-trac">
+                <div class="h1">Tracciabilità</div><div class="sub">Dalla bottiglia al campo, e ritorno</div>
+                <div class="search"><div class="inp"><i data-lucide="search"></i><span id="tq"></span></div><div class="seg"><span class="on">A ritroso</span><span>In avanti</span></div><span class="btn ghost" id="csv"><i data-lucide="download"></i>Esporta CSV</span></div>
+                <div class="card tree">
+                  <div class="trunk" id="trunk"></div>
+                  <div class="node" data-n="0"><span class="ic"><i data-lucide="beer"></i></span><div class="tx">Cotta <b class="mono">M-26-09</b> · Magda<small>1.120 bottiglie · 4 clienti</small></div><span class="k">25/08/2026</span></div>
+                  <div class="node" data-n="1"><span class="ic"><i data-lucide="flame"></i></span><div class="tx">Malto <b class="mono">MAL-26-04</b><small>Resa di maltazione 79%</small></div><span class="k">02/08/2026</span></div>
+                  <div class="node" data-n="2"><span class="ic"><i data-lucide="microscope"></i></span><div class="tx">Orzo calibrato <b class="mono">OC-26-11</b><small>Frazione &gt; 2,5 mm</small></div><span class="k">12/07/2026</span></div>
+                  <div class="node" data-n="3"><span class="ic"><i data-lucide="wheat"></i></span><div class="tx">Raccolta <b class="mono">OG-26-07</b><small>12.400 kg di orzo grezzo</small></div><span class="k">28/06/2026</span></div>
+                  <div class="node" data-n="4"><span class="ic" style="color:var(--field)"><i data-lucide="sprout"></i></span><div class="tx">Campo <b>Le Coste</b> · semina Planet<small>1 trattamento · carenza rispettata</small></div><span class="k">24/10/2025</span></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bira -->
+            <div class="dim" id="dim2" style="top:0"></div>
+            <div class="bira" id="bira" style="opacity:0">
+              <div class="bh"><span class="av"><i data-lucide="sparkles"></i></span><div><b>Bira</b><small>legge i dati di Fermento</small></div></div>
+              <div class="bb">
+                <div class="mu" id="bq" style="opacity:0">Chi ha ancora fusti da restituire?</div>
+                <div class="tools" id="btools" style="opacity:0"><span>fusti_a_rendere</span></div>
+                <div class="mb" id="ba" style="opacity:0"><span id="batext"></span>
+                  <table id="btab" style="opacity:0"><tr><td>Pub Il Luppolo</td><td>4 × 20 L</td></tr><tr><td>Trattoria Il Mulino</td><td>2 × 30 L</td></tr><tr><td>Bar Centrale</td><td>1 × 20 L</td></tr></table>
+                </div>
+              </div>
+              <div class="bi"><span id="bin">Chiedi a Bira…</span><span class="send"><i data-lucide="arrow-up"></i></span></div>
+            </div>
+            <div class="priv" id="priv">
+              <h4><i data-lucide="lock"></i>I dati dei clienti restano sul tuo computer</h4>
+              <div class="pv">
+                <div class="c"><small>Sul tuo PC</small>Pub Il Luppolo</div>
+                <div class="ar"><i data-lucide="arrow-right"></i></div>
+                <div class="c code"><small>Arriva a Bira</small><b>CLIENTE-12</b></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div id="ring"></div>
+        <svg id="cur" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15.5 L12.5 22.5 L15.5 21 L12 14 L19 14 Z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTRO -->
+  <div class="layer" id="outro">
+    <div class="center">
+      <div class="word" id="o-word" style="font-size:96px">FERMENTO</div>
+      <div class="tagl" id="o-tag">Dal campo alla bottiglia, <em>tutto in un posto.</em></div>
+      <div class="cta" id="o-cta"><span class="btn">Richiedi la demo gratuita</span><small>fermento-software.it · Windows e Mac</small></div>
+    </div>
+  </div>
+
+  <div id="cap"><span></span></div>
+</div>
+
+<script>
+lucide.createIcons();
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const clamp = (v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp = (a,b,p)=>a+(b-a)*p;
+const eio = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+const eo = p => 1-Math.pow(1-p,3);
+const prog = (t,a,d)=>clamp((t-a)/d);
+const OFF = 0.8;           // ritardo della voce
+const V = x => x + OFF;    // tempo voce -> tempo video
+const W = 1920, H = 1080;
+
+// ---------- sottotitoli (tempi della voce) ----------
+const CAPS = [
+ [0.0,3.95,"Questo è Fermento: il gestionale per i birrifici artigianali."],
+ [4.18,6.6,"E da oggi, anche per quelli agricoli."],
+ [6.84,9.55,"Apri il programma e sai subito come stai:"],
+ [9.74,11.8,"avvisi, cotte in corso,"],
+ [11.9,15.0,"e quante cotte puoi fare con quello che hai in magazzino."],
+ [15.22,17.15,"Ogni carico diventa un lotto,"],
+ [17.24,20.45,"e ogni cotta usa per primo il lotto più vecchio."],
+ [20.62,23.65,"Gli ingredienti li cambi solo per quella cotta:"],
+ [23.78,25.65,"la ricetta resta com'è."],
+ [25.82,26.95,"Registri le vendite,"],
+ [27.02,31.7,"e Fermento tiene il conto dei fusti a rendere, cliente per cliente."],
+ [32.02,33.65,"Coltivi il tuo orzo?"],
+ [33.74,37.35,"Il modulo agricolo segue la filiera dal campo al malto."],
+ [37.48,40.85,"E dalla bottiglia risali fino al campo, in un clic."],
+ [40.98,42.25,"Poi c'è Bira:"],
+ [42.38,45.55,"le chiedi in italiano, e risponde con i tuoi dati."],
+ [45.7,48.5,"I nomi dei clienti non escono mai dal computer."]
+];
+
+// ---------- scene ----------
+const T = {
+  introEnd: V(6.6), appIn: V(6.0),
+  dash: V(6.6), mp: V(15.0), prod: V(20.45), vend: V(25.65), fusti: V(28.2),
+  campi: V(31.85), malt: V(33.6), trac: V(37.4), bira: V(40.9), outro: V(48.6), end: V(48.6)+5.6
+};
+window.DURATION = T.end;
+
+const screens = [['#s-dash',T.dash,T.mp,'DASHBOARD','dashboard'],['#s-mp',T.mp,T.prod,'MAGAZZINO MATERIE PRIME','mp'],['#s-prod',T.prod,T.vend,'PRODUZIONE','prod'],
+  ['#s-vend',T.vend,T.campi,'VENDITE','vendite'],['#s-campi',T.campi,T.malt,'CAMPI E SEMINE','campi'],['#s-malt',T.malt,T.trac,'MALTAZIONI','malt'],['#s-trac',T.trac,T.outro+1,'TRACCIABILITÀ','trac']];
+
+// camera: [tempo, scala, bersaglio] · cursore: [tempo, bersaglio, click?]
+const BASE = 1.13;
+const CAMK = [
+  [0,BASE,'c'],
+  [V(11.6),BASE,'c'],[V(12.4),1.32,'#prodcard'],[V(14.4),1.32,'#prodcard'],[V(15.0),BASE,'c'],
+  [V(16.1),BASE,'c'],[V(16.9),1.32,'#lot1',0,90],[V(19.9),1.32,'#lot1',0,90],[V(20.4),BASE,'c'],
+  [V(21.3),BASE,'c'],[V(22.0),1.3,'#modal'],[V(25.0),1.3,'#modal'],[V(25.5),BASE,'c'],
+  [V(28.5),BASE,'c'],[V(29.3),1.32,'#fusti',0,60],[V(31.3),1.32,'#fusti',0,60],[V(31.8),BASE,'c'],
+  [V(34.2),BASE,'c'],[V(35.0),1.32,'.chart'],[V(37.0),1.32,'.chart'],[V(37.4),BASE,'c'],
+  [V(38.6),BASE,'c'],[V(39.3),1.3,'.tree'],[V(40.6),1.3,'.tree'],[V(41.0),BASE,'c'],
+  [V(41.7),BASE,'c'],[V(42.4),1.3,'#bira',0,0,'keepx'],[V(45.3),1.3,'#bira',0,0,'keepx'],[V(45.8),BASE,'c'],
+  [99,BASE,'c']
+];
+const CURK = [
+  [V(6.6),[1100,760]],[V(9.4),'#k1'],[V(10.6),'#k2'],[V(12.2),'#prodcard',60,40],[V(14.2),'#prodcard',120,60],
+  [V(14.85),'#nav [data-k=mp]',1],[V(15.45),'#mp-pale',1],[V(17.3),'#lot1q'],[V(19.7),'#lot1q'],
+  [V(20.3),'#nav [data-k=prod]',1],[V(20.65),'#newcotta',1],[V(21.5),'#casc',1],[V(22.6),'#casc'],[V(23.0),'#saaz',1],
+  [V(23.5),'#addrow'],[V(24.1),'#note'],[V(25.0),'#avvia',1],
+  [V(25.5),'#nav [data-k=vendite]',1],[V(26.5),'#vnew'],[V(27.9),'#fustibtn',1],[V(29.2),'#kc1'],[V(31.3),'#kc1'],
+  [V(31.7),'#nav [data-k=campi]',1],[V(32.7),'.map'],[V(33.45),'#nav [data-k=malt]',1],[V(35.4),'.chart'],[V(36.9),'#y1'],
+  [V(37.25),'#nav [data-k=trac]',1],[V(38.0),'#tq'],[V(39.5),'#s-trac .node[data-n="4"] .tx'],[V(40.25),'#csv',1],
+  [V(40.85),'#birabtn',1],[V(42.0),'#bin'],[V(43.55),'.bi .send',1],[V(48.0),'.bi .send']
+];
+function localPos(el){ let x=0,y=0,e=el; const win=$('#win'); while(e && e!==win){ x+=e.offsetLeft; y+=e.offsetTop; e=e.offsetParent; } return [x+el.offsetWidth/2, y+el.offsetHeight/2]; }
+function resolve(tg,dx=0,dy=0){ if(tg==='c') return [800,450]; if(Array.isArray(tg)) return tg; const p=localPos($(tg)); return [p[0]+dx,p[1]+dy]; }
+let CAM, CUR;
+function initKeys(){ CAM = CAMK.map(k=>{ const p=resolve(k[2],k[3]||0,k[4]||0); if(k[2]!=='c' && k[5]!=='keepx') p[0]=918; return [k[0],k[1],p[0],p[1]]; });
+CUR = CURK.map(k=>{ if(typeof k[2]==='number' && typeof k[3]==='number'){ const p=resolve(k[1],k[2],k[3]); return [k[0],p[0],p[1],0]; } const p=resolve(k[1]); return [k[0],p[0],p[1],k[2]?1:0]; }); }
+initKeys();
+window.ready = document.fonts.ready.then(()=>{ initKeys(); seek(0); });
+function clampCam(s,cx,cy){ const hw=W/2/s, hh=H/2/s; if(1600>2*hw) cx=clamp(cx,hw,1600-hw); else cx=800; if(900>2*hh) cy=clamp(cy,hh,900-hh); else cy=450; return [cx,cy]; }
+
+function interpKeys(keys, t, n){
+  if (t<=keys[0][0]) return keys[0].slice(1,1+n);
+  for (let i=0;i<keys.length-1;i++){
+    const a=keys[i], b=keys[i+1];
+    if (t>=a[0] && t<=b[0]){ const p=eio((t-a[0])/(b[0]-a[0]||1)); const r=[]; for(let k=1;k<=n;k++) r.push(lerp(a[k],b[k],p)); return r; }
+  }
+  return keys[keys.length-1].slice(1,1+n);
+}
+function op(el, v){ (typeof el==='string'?$(el):el).style.opacity = v; }
+function fadeWin(t,a,b,f=0.35){ return Math.min(prog(t,a,f), 1-prog(t,b-f,f)); }
+function typeAt(el, text, t, a, cps){ const n = Math.floor(clamp((t-a)*cps,0,text.length)); el.textContent = text.slice(0,n); return n; }
+function countAt(el, to, t, a, d, suf=''){ el.textContent = Math.round(to*eo(prog(t,a,d))) + suf; }
+
+// righe del campo
+(function(){ const g=$('#rows'); for(let x=40;x<720;x+=18){ const l=document.createElementNS('http://www.w3.org/2000/svg','line'); l.setAttribute('x1',x);l.setAttribute('y1',0);l.setAttribute('x2',x-120);l.setAttribute('y2',420); g.appendChild(l);} })();
+const word = $('#i-word'); 'FERMENTO'.split('').forEach(c=>{const s=document.createElement('span');s.textContent=c;word.appendChild(s);});
+
+function seek(t){
+  // ---- intro ----
+  const introOp = 1-prog(t,T.introEnd-0.5,0.6);
+  op('#intro', introOp);
+  $('#intro').style.transform = `scale(${1+0.04*prog(t,T.introEnd-0.6,0.8)})`;
+  op('#i-pill', eo(prog(t,0.2,0.6)));
+  word.querySelectorAll('span').forEach((s,i)=>{ const p=eo(prog(t,0.35+i*0.07,0.6)); s.style.opacity=p; s.style.transform=`translateY(${(1-p)*30}px)`; });
+  const p1=eo(prog(t,V(1.3),0.7)); op('#i-tag1',p1); $('#i-tag1').style.transform=`translateY(${(1-p1)*16}px)`;
+  const p2=eo(prog(t,V(4.18),0.7)); op('#i-tag2',p2); $('#i-tag2').style.transform=`translateY(${(1-p2)*16}px)`;
+
+  // ---- app ----
+  const appIn = eo(prog(t,T.appIn,1.0));
+  const appOut = prog(t,T.outro,0.7);
+  op('#applayer', appIn*(1-appOut));
+  let [s,cx,cy] = interpKeys(CAM,t,3); [cx,cy]=clampCam(s,cx,cy);
+  s *= lerp(0.9,1,appIn) * lerp(1,0.94,eo(appOut));
+  const ty = (1-appIn)*120;
+  $('#cam').style.transform = `translate(${W/2-cx*s}px,${H/2-cy*s+ty-18}px) scale(${s})`;
+
+  // schermate + menu
+  let active='dashboard', crumb='DASHBOARD';
+  screens.forEach(([sel,a,b,cr,k])=>{ const v=fadeWin(t,a,b,0.3); op(sel,v); $(sel).style.transform=`translateY(${(1-eo(prog(t,a,0.4)))*10}px)`; if(t>=a-0.15 && t<b-0.15){active=k;crumb=cr;} });
+  if (t>=T.vend && t>=T.fusti && t<T.campi) crumb='VENDITE · FUSTI IN GIRO';
+  $$('#nav .ni').forEach(n=>n.classList.toggle('on', n.dataset.k===active));
+  $('#crumb').textContent = crumb;
+
+  // dashboard
+  $$('#s-dash .kpi').forEach((k,i)=>{ const p=eo(prog(t,T.dash+0.1+i*0.12,0.5)); k.style.opacity=p; k.style.transform=`translateY(${(1-p)*14}px)`; });
+  countAt($('#k1'),7,t,V(9.7),0.8); countAt($('#k2'),2,t,V(10.5),0.6); countAt($('#k3'),1,t,V(10.9),0.5);
+  const pc=eo(prog(t,T.dash+0.5,0.6)); op('#prodcard',pc);
+  $$('#prodcard .meter i').forEach((m,i)=>{ m.style.width = (m.dataset.w*eo(prog(t,V(12.0)+i*0.15,0.9)))+'%'; });
+
+  // magazzino: apertura lotti
+  const lo = eio(prog(t,V(15.55),0.6));
+  $('#lotswrap').style.height = (lo*$('#lotswrap .lots').offsetHeight+lo*14)+'px';
+  $('#mp-pale').classList.toggle('sel', t>V(15.5));
+  const tagp = prog(t,V(17.3),0.4); op('#lot1tag', 0.3+0.7*tagp);
+  $('#lot1').style.boxShadow = `0 0 0 ${tagp*4}px rgba(232,160,32,${0.12*tagp})`;
+  const mm = prog(t,V(18.9),0.5); op('#lot1m', mm*(1-prog(t,V(20.0),0.3))); $('#lot1m').style.transform=`translateY(${-mm*6}px)`;
+  $('#lot1q').textContent = t>V(19.1) ? '0 kg' : '18 kg';
+  $('#pale-q').textContent = t>V(19.1) ? '375 kg' : '393 kg';
+
+  // nuova cotta
+  const mo = eo(prog(t,V(20.75),0.45))*(1-eo(prog(t,V(25.15),0.35))); op('#dim1',mo); op('#modal',mo); $('#modal').style.transform=`translateY(${(1-mo)*24}px) scale(${0.97+0.03*mo})`;
+  const editing = t>V(21.55) && t<V(22.8);
+  $('#casc').classList.toggle('focus', editing);
+  if (t<V(21.6)) $('#casc').textContent='2,8'; else { const n=typeAt($('#casc'),'3,2',t,V(21.8),5); if(!n) $('#casc').innerHTML='&nbsp;'; }
+  $('#casc-tag').innerHTML = t>V(22.5) ? '<span class="pill p-am">modificato</span>' : '';
+  $('#saaz').innerHTML = t>V(23.1) ? '<s>Saaz</s><span style="color:var(--amber2)">Hallertau Mittelfrüh</span>' : 'Saaz';
+  $('#saaz-tag').innerHTML = t>V(23.1) ? '<span class="pill p-am">sostituito</span>' : '';
+  const ad = eo(prog(t,V(23.6),0.4)); op('#addrow',ad);
+  const nt = prog(t,V(23.85),0.4); $('#note').style.boxShadow=`0 0 0 ${nt*4}px rgba(232,160,32,${0.15*nt})`;
+
+  // vendite
+  const vn = eo(prog(t,V(26.0),0.5)); $('#vnew').style.opacity=vn; $('#vnew').style.transform=`translateX(${(1-vn)*-30}px)`;
+  const fu = eo(prog(t,T.fusti,0.45)); op('#vend-list',1-fu); op('#fusti',fu); $('#fusti').style.transform=`translateY(${(1-fu)*16}px)`;
+  $('#vend-title').textContent = t>=T.fusti ? 'Fusti in giro' : 'Vendite';
+  $('#vend-sub').textContent = t>=T.fusti ? 'Saldo per cliente e formato: uscite meno rientri' : 'Storico e registrazione vendite';
+  countAt($('#kc1'),4,t,T.fusti+0.3,0.8); countAt($('#kc2'),2,t,T.fusti+0.5,0.7); countAt($('#kc3'),1,t,T.fusti+0.7,0.5);
+
+  // campo
+  $('#fpath').setAttribute('stroke-dashoffset', 1-eio(prog(t,T.campi+0.2,1.2)));
+  $('#rows').style.opacity = prog(t,T.campi+0.8,0.6);
+
+  // maltazione
+  ['#c1','#c2','#c3'].forEach((c,i)=>$(c).setAttribute('stroke-dashoffset', 1-eio(prog(t,T.malt+0.4+i*0.25,1.8))));
+  countAt($('#y1'),79,t,T.malt+1.8,1.0,'%'); countAt($('#y2'),72,t,T.malt+2.1,1.0,'%');
+
+  // tracciabilità
+  typeAt($('#tq'),'M-26-09',t,T.trac+0.3,14);
+  $$('#s-trac .node').forEach((n,i)=>{ const p=eo(prog(t,T.trac+0.75+i*0.24,0.4)); n.style.opacity=p; n.style.transform=`translateX(${(1-p)*-16}px)`; });
+  $('#trunk').style.height = (eio(prog(t,T.trac+0.75,1.2))*($('#s-trac .node[data-n="4"]').offsetTop-$('#s-trac .node[data-n="0"]').offsetTop))+'px';
+  const cs = prog(t,V(40.3),0.25)*(1-prog(t,V(40.7),0.4)); $('#csv').style.boxShadow=`0 0 0 ${cs*5}px rgba(232,160,32,.25)`;
+
+  // bira
+  const bo = eo(prog(t,V(41.25),0.5)) * (1-prog(t,T.outro,0.5));
+  op('#bira',bo); op('#dim2',bo*0.8); $('#bira').style.transform=`translateX(${(1-bo)*60}px)`;
+  const q='Chi ha ancora fusti da restituire?';
+  if (t<V(43.6)) { const n=typeAt($('#bin'),q,t,V(42.0),22); if(!n) $('#bin').textContent='Chiedi a Bira…'; $('#bin').className = n? 'typed':''; }
+  else { $('#bin').textContent='Chiedi a Bira…'; $('#bin').className=''; }
+  op('#bq', eo(prog(t,V(43.6),0.3)));
+  op('#btools', eo(prog(t,V(43.95),0.3)));
+  op('#ba', eo(prog(t,V(44.3),0.3)));
+  typeAt($('#batext'),'Hai 7 fusti fuori, in tre locali:',t,V(44.4),40);
+  op('#btab', eo(prog(t,V(45.2),0.4)));
+  const pv = eo(prog(t,V(45.75),0.5))*(1-prog(t,T.outro,0.4)); op('#priv',pv); $('#priv').style.transform=`translateY(${(1-pv)*20}px)`;
+
+  // cursore
+  const [x,y] = interpKeys(CUR,t,2);
+  const curVis = fadeWin(t,V(6.9),T.outro,0.3);
+  $('#cur').style.opacity = curVis; $('#cur').style.transform=`translate(${x-4}px,${y-2}px)`;
+  let ringP = 1, rx=0, ry=0;
+  CUR.forEach(k=>{ if(k[3] && t>=k[0] && t<k[0]+0.5){ ringP=(t-k[0])/0.5; rx=k[1]; ry=k[2]; } });
+  $('#ring').style.opacity = ringP<1 ? (1-ringP)*curVis : 0;
+  $('#ring').style.left=rx+'px'; $('#ring').style.top=ry+'px'; $('#ring').style.transform=`scale(${0.4+ringP})`;
+
+  // outro
+  const oo = eo(prog(t,T.outro+0.3,0.8));
+  op('#outro', oo);
+  op('#o-word', oo); $('#o-word').style.letterSpacing = (0.5-0.18*oo)+'em';
+  const ot = eo(prog(t,T.outro+0.9,0.7)); op('#o-tag',ot); $('#o-tag').style.transform=`translateY(${(1-ot)*16}px)`;
+  const oc = eo(prog(t,T.outro+2.2,0.7)); op('#o-cta',oc); $('#o-cta').style.transform=`translateY(${(1-oc)*16}px)`;
+
+  // sottotitoli
+  const vt = t-OFF; let c='';
+  for (const [a,b,txt] of CAPS) if (vt>=a && vt<b) c=txt;
+  $('#cap span').textContent = c;
+}
+window.seek = seek;
+seek(0);
+</script>
+</body>
+</html>
