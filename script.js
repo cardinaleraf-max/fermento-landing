@@ -231,7 +231,6 @@
   var demoVideo = document.getElementById('demo-video');
   var demoPlay = document.getElementById('demo-play');
   if (demoVideo && demoPlay) {
-    demoVideo.addEventListener('loadedmetadata', function () { demoVideo.currentTime = 0.03; });
     demoPlay.addEventListener('click', function () { demoVideo.controls = true; demoVideo.play(); });
     demoVideo.addEventListener('play', function () { demoPlay.classList.add('is-hidden'); });
     demoVideo.addEventListener('pause', function () { if (!demoVideo.ended) demoPlay.classList.remove('is-hidden'); });
@@ -240,7 +239,7 @@
       else if (document.webkitFullscreenElement) document.webkitExitFullscreen();
       else if (demoVideo.webkitDisplayingFullscreen) demoVideo.webkitExitFullScreen();
       demoVideo.controls = false;
-      demoVideo.currentTime = 0.03;
+      demoVideo.load(); // torna alla copertina
       demoPlay.classList.remove('is-hidden');
       var card = document.querySelector('.form-card');
       setTimeout(function () {
