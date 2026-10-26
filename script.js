@@ -69,6 +69,46 @@
     heroApp.addEventListener('mouseleave', function () { tilt.style.transform = ''; });
   }
 
+  // ---------- Tubo di birra ----------
+  var brew = document.getElementById('brew');
+  if (brew) {
+    var liquid = document.getElementById('brew-liquid');
+    var litri = document.getElementById('brew-l');
+    var stages = Array.prototype.slice.call(document.querySelectorAll('#brew-stages li'));
+    var soglie = stages.map(function (li) { return parseFloat(li.style.getPropertyValue('--at')); });
+    if (!reduced) {
+      for (var b = 0; b < 46; b++) {
+        var s = document.createElement('span');
+        var size = 2 + Math.random() * 4;
+        s.className = 'bub';
+        s.style.cssText = 'left:' + (Math.random() * 100) + '%;width:' + size + 'px;height:' + size + 'px;' +
+          'animation-duration:' + (1.6 + Math.random() * 2.4) + 's;animation-delay:' + (-Math.random() * 4) + 's;--dx:' + (Math.random() * 8 - 4) + 'px';
+        liquid.appendChild(s);
+      }
+    }
+    function setFill(p) {
+      brew.style.setProperty('--fill', (p * 100) + '%');
+      brew.style.setProperty('--front', p > 0.005 && p < 0.995 ? 1 : 0);
+      litri.textContent = String(Math.round(p * 1000)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      brew.style.setProperty('--soft', p > 0.005 && p < 0.995 ? '22px' : '0px');
+      stages.forEach(function (li, i) { li.classList.toggle('is-on', p * 100 >= soglie[i] - 0.5); });
+    }
+    if (reduced) setFill(1);
+    else {
+      setFill(0);
+      whenVisible(brew, function () {
+        var start = null, DUR = 6200;
+        function pour(t) {
+          if (!start) start = t;
+          var x = Math.min((t - start) / DUR, 1);
+          setFill(1 - Math.pow(1 - x, 2.4));
+          if (x < 1) requestAnimationFrame(pour);
+        }
+        setTimeout(function () { requestAnimationFrame(pour); }, 300);
+      }, 0.6);
+    }
+  }
+
   // ---------- Grafico vendite ----------
   var spark = document.getElementById('spark');
   if (spark) {

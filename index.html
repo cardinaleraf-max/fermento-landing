@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Fermento — Gestionale per birrifici artigianali e agricoli</title>
-  <meta name="description" content="Magazzino, cotte, vendite e filiera dal campo al malto. Il gestionale desktop per birrifici artigianali e agricoli, con Bira, l'assistente che conosce i tuoi numeri.">
+  <title>Fermento — Gestionale per birrifici artigianali</title>
+  <meta name="description" content="Magazzino, produzione e vendite per birrifici artigianali. Desktop, con Bira, l'assistente AI che conosce i tuoi numeri.">
   <meta name="author" content="Fermento">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0B0B10">
@@ -14,8 +14,8 @@
   <meta property="og:site_name"   content="Fermento">
   <meta property="og:locale"      content="it_IT">
   <meta property="og:url"         content="https://fermento-software.it">
-  <meta property="og:title"       content="Fermento — Gestionale per birrifici artigianali e agricoli">
-  <meta property="og:description" content="Dal campo alla bottiglia: magazzino, cotte, vendite e filiera del malto. Tutto sul tuo computer, con Bira, l'assistente che conosce il tuo birrificio.">
+  <meta property="og:title"       content="Fermento — Gestionale per birrifici artigianali">
+  <meta property="og:description" content="Magazzino, produzione e vendite. Tutto sul tuo computer. Con Bira, l'assistente AI che conosce il tuo birrificio.">
   <meta property="og:image"            content="https://fermento-software.it/assets/og-image.jpg">
   <meta property="og:image:secure_url" content="https://fermento-software.it/assets/og-image.jpg">
   <meta property="og:image:type"       content="image/jpeg">
@@ -24,15 +24,15 @@
   <meta property="og:image:alt"        content="Fermento — Gestionale per birrifici artigianali">
 
   <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="Fermento — Gestionale per birrifici artigianali e agricoli">
-  <meta name="twitter:description" content="Dal campo alla bottiglia. Tutto sul tuo computer.">
+  <meta name="twitter:title"       content="Fermento — Gestionale per birrifici artigianali">
+  <meta name="twitter:description" content="Magazzino, produzione e vendite. Tutto sul tuo computer.">
   <meta name="twitter:image"       content="https://fermento-software.it/assets/og-image.jpg">
 
   <script>document.documentElement.classList.add('js')</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=8">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 </head>
 <body>
@@ -67,11 +67,11 @@
         <div class="hero-copy">
           <a href="#filiera" class="release-pill">
             <span class="release-tag">v1.5</span>
-            Nuovo modulo agricolo: dal campo al malto
+            Novità: modulo agricolo
             <span aria-hidden="true">→</span>
           </a>
-          <h1>Dal campo alla bottiglia,<br><em>tutto in un posto.</em></h1>
-          <p class="hero-lead">Fermento è il gestionale per birrifici artigianali e agricoli. Magazzino, cotte, vendite, fusti, filiera del malto e un assistente che conosce i tuoi numeri. Gira sul tuo computer, i dati restano tuoi.</p>
+          <h1>Il software che il tuo birrificio <em>aspettava.</em></h1>
+          <p class="hero-lead">Magazzino, produzione e vendite. Tutto sul tuo computer.</p>
           <div class="hero-ctas">
             <a href="#inizia" class="btn btn-amber btn-lg">Richiedi la demo gratuita</a>
             <a href="https://wa.me/393920287899" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
@@ -132,13 +132,27 @@
         </div>
       </div>
 
-      <div class="ticker" aria-hidden="true">
-        <div class="ticker-track">
-          <span>Scarico FIFO dei lotti</span><span>Versioning ricette</span><span>Ingredienti modificabili per cotta</span><span>Fusti a rendere</span><span>Lotti imballi HACCP</span><span>Quaderno di campagna</span><span>Tempo di carenza</span><span>Calibratura</span><span>Curve di essiccazione</span><span>Tracciabilità in CSV</span><span>Backup automatici</span><span>Tema chiaro e scuro</span>
-          <span>Scarico FIFO dei lotti</span><span>Versioning ricette</span><span>Ingredienti modificabili per cotta</span><span>Fusti a rendere</span><span>Lotti imballi HACCP</span><span>Quaderno di campagna</span><span>Tempo di carenza</span><span>Calibratura</span><span>Curve di essiccazione</span><span>Tracciabilità in CSV</span><span>Backup automatici</span><span>Tema chiaro e scuro</span>
-        </div>
-      </div>
     </section>
+
+    <!-- ============ TUBO DI BIRRA ============ -->
+    <div class="brew" aria-hidden="true">
+      <div class="wrap">
+        <div class="brew-head"><span>Dal primo sacco di malto all'ultima bottiglia</span><span><b id="brew-l">0</b> / 1.000 L</span></div>
+        <div class="brew-tube" id="brew">
+          <div class="brew-liquid" id="brew-liquid"></div>
+          <div class="brew-front"></div>
+          <div class="brew-ticks"></div>
+          <div class="brew-glass"></div>
+        </div>
+        <ol class="brew-stages" id="brew-stages">
+          <li style="--at:0%"><span>Malto</span></li>
+          <li style="--at:25%"><span>Cotta</span></li>
+          <li style="--at:50%"><span>Bottiglia</span></li>
+          <li style="--at:75%"><span>Vendita</span></li>
+          <li style="--at:100%"><span>Cliente</span></li>
+        </ol>
+      </div>
+    </div>
 
     <!-- ============ GESTIONALE (bento) ============ -->
     <section class="sec" id="gestionale">
@@ -626,6 +640,6 @@
   </footer>
 
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-  <script src="script.js?v=5" defer></script>
+  <script src="script.js?v=8" defer></script>
 </body>
 </html>
