@@ -43,7 +43,7 @@
 
   // ---------- Hero ----------
   var heroApp = document.querySelector('.hero-app');
-  requestAnimationFrame(function () { heroApp.classList.add('is-in'); });
+  if (heroApp) requestAnimationFrame(function () { heroApp.classList.add('is-in'); });
 
   document.querySelectorAll('[data-count]').forEach(function (el) {
     var target = parseInt(el.getAttribute('data-count'), 10);

@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Fermento — Gestionale per birrifici artigianali</title>
-  <meta name="description" content="Magazzino, produzione e vendite per birrifici artigianali. Desktop, con Bira, l'assistente AI che conosce i tuoi numeri.">
+  <title>Gestionale per birrifici artigianali e agricoli | Fermento</title>
+  <meta name="description" content="Gestionale per birrificio artigianale e agricolo: magazzino a lotti, cotte, vendite, fusti e filiera dal campo alla bottiglia. Windows e Mac. Demo gratuita.">
   <meta name="author" content="Fermento">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://fermento-software.it/">
   <meta name="theme-color" content="#0B0B10">
 
   <meta property="og:type"        content="website">
   <meta property="og:site_name"   content="Fermento">
   <meta property="og:locale"      content="it_IT">
-  <meta property="og:url"         content="https://fermento-software.it">
+  <meta property="og:url"         content="https://fermento-software.it/">
   <meta property="og:title"       content="Fermento — Gestionale per birrifici artigianali">
   <meta property="og:description" content="Magazzino, produzione e vendite. Tutto sul tuo computer. Con Bira, l'assistente AI che conosce il tuo birrificio.">
   <meta property="og:image"            content="https://fermento-software.it/assets/og-image.jpg">
@@ -32,8 +33,79 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://fermento-software.it/#org",
+        "name": "Fermento",
+        "url": "https://fermento-software.it/",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "telephone": "+39 392 028 7899",
+          "availableLanguage": "Italian",
+          "areaServed": "IT"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://fermento-software.it/#website",
+        "url": "https://fermento-software.it/",
+        "name": "Fermento",
+        "inLanguage": "it-IT",
+        "publisher": { "@id": "https://fermento-software.it/#org" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://fermento-software.it/#software",
+        "name": "Fermento",
+        "alternateName": "Fermento gestionale birrificio",
+        "description": "Gestionale desktop per birrifici artigianali e agricoli: magazzino materie prime a lotti, produzione e cotte, vendite, fusti, report e filiera agricola dal campo alla bottiglia, con l'assistente AI Bira.",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Gestionale per birrifici",
+        "operatingSystem": "Windows, macOS",
+        "softwareVersion": "1.5.0",
+        "inLanguage": "it-IT",
+        "url": "https://fermento-software.it/",
+        "image": "https://fermento-software.it/assets/og-image.jpg",
+        "screenshot": "https://fermento-software.it/assets/screenshot.png",
+        "featureList": [
+          "Magazzino materie prime a lotti con scarico FIFO",
+          "Cotte producibili dalle giacenze",
+          "Ricette e modifiche ingredienti per singola cotta",
+          "Vendite, clienti e gestione fusti",
+          "Lotti degli imballi per HACCP",
+          "Report su produzione e vendite",
+          "Modulo agricolo: campi, semine, trattamenti, raccolte, calibratura e maltazione",
+          "Tracciabilità dal campo alla bottiglia",
+          "Assistente AI Bira",
+          "Backup automatici e dati sul proprio computer"
+        ],
+        "publisher": { "@id": "https://fermento-software.it/#org" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://fermento-software.it/#faq",
+        "mainEntity": [
+          { "@type": "Question", "name": "Cos'è Fermento?", "acceptedAnswer": { "@type": "Answer", "text": "Fermento è un gestionale per birrifici artigianali e agricoli. In un solo programma tieni magazzino delle materie prime a lotti, ricette, cotte, vendite, fusti e report. Con il modulo agricolo gestisci anche campi, raccolte e maltazione." } },
+          { "@type": "Question", "name": "Fermento funziona su Mac e su Windows?", "acceptedAnswer": { "@type": "Answer", "text": "Sì. Fermento è un programma desktop per Windows e Mac. Si installa sul computer e si aggiorna da solo all'avvio." } },
+          { "@type": "Question", "name": "Dove vengono salvati i dati del birrificio?", "acceptedAnswer": { "@type": "Answer", "text": "Sul tuo computer. Il database è locale, senza cloud obbligatorio. I backup automatici vanno nella cartella che scegli, anche Google Drive o Dropbox." } },
+          { "@type": "Question", "name": "Fermento è adatto a un birrificio agricolo?", "acceptedAnswer": { "@type": "Answer", "text": "Sì. Il modulo agricolo copre la filiera completa: campi e semine, trattamenti con tempo di carenza calcolato, raccolte, analisi e calibratura dell'orzo, maltazione e tracciabilità dal campo alla bottiglia. Se non ti serve resta spento." } },
+          { "@type": "Question", "name": "Come funziona la tracciabilità dei lotti?", "acceptedAnswer": { "@type": "Answer", "text": "Ogni carico di materia prima diventa un lotto, ogni cotta scarica il magazzino partendo dal lotto più vecchio e ogni vendita sa da che cotta arriva. Puoi registrare anche i lotti di bottiglie, tappi e fusti per l'HACCP." } },
+          { "@type": "Question", "name": "Posso sostituire Excel e i quaderni con Fermento?", "acceptedAnswer": { "@type": "Answer", "text": "Sì, è pensato per questo. Giacenze, ricette, cotte, clienti, fusti in giro e scadenze stanno in un solo programma, che ti avvisa quando una scorta è bassa o un lotto sta per scadere." } },
+          { "@type": "Question", "name": "Cos'è Bira?", "acceptedAnswer": { "@type": "Answer", "text": "Bira è l'assistente AI di Fermento. Le fai domande in italiano e risponde con i dati del tuo birrificio. È in sola lettura e i dati di clienti e fornitori non lasciano il tuo computer." } },
+          { "@type": "Question", "name": "Posso provare Fermento gratis?", "acceptedAnswer": { "@type": "Answer", "text": "Sì. Fermento Demo è la versione completa con dati di esempio. Compila il modulo e ricevi il link per scaricarla entro 24 ore. La configurazione iniziale si fa insieme in circa mezz'ora." } }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -70,8 +142,8 @@
             Novità: modulo agricolo
             <span aria-hidden="true">→</span>
           </a>
-          <h1>Il software che il tuo birrificio <em>aspettava.</em></h1>
-          <p class="hero-lead">Magazzino, produzione e vendite. Tutto sul tuo computer.</p>
+          <h1>Il gestionale che il tuo birrificio <em>aspettava.</em></h1>
+          <p class="hero-lead">Magazzino, produzione, vendite e filiera agricola. Tutto sul tuo computer.</p>
           <div class="hero-ctas">
             <a href="#inizia" class="btn btn-amber btn-lg">Richiedi la demo gratuita</a>
             <a href="https://wa.me/393920287899" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
@@ -283,9 +355,10 @@
     <section class="sec paper" id="filiera">
       <div class="wrap">
         <div class="sec-head" data-reveal>
-          <p class="eyebrow eyebrow-field"><span class="pill-new">Nuovo</span> Modulo agricolo</p>
+          <p class="eyebrow eyebrow-field"><span class="pill-new">Nuovo</span> Gestionale per birrificio agricolo</p>
           <h2>Coltivi il tuo orzo? <em>Fermento parte dal campo.</em></h2>
-          <p class="sec-lead">Per i birrifici agricoli c'è tutta la filiera: semine, trattamenti, raccolte, calibratura e maltazione, fino alla bottiglia. Ogni passaggio è un lotto collegato al precedente. Se non ti serve resta spento e non lo vedi nemmeno.</p>
+          <p class="sec-lead">Per i birrifici agricoli c'è tutta la filiera: quaderno di campagna, semine, trattamenti, raccolte, calibratura e maltazione, fino alla bottiglia. Ogni passaggio è un lotto collegato al precedente. Se non ti serve resta spento e non lo vedi nemmeno.</p>
+          <p class="sec-more"><a href="birrificio-agricolo/">Scopri il modulo agricolo <span aria-hidden="true">→</span></a></p>
         </div>
 
         <div class="chain" id="chain" data-reveal>
@@ -547,6 +620,51 @@
       </div>
     </section>
 
+    <!-- ============ FAQ ============ -->
+    <section class="sec faq" id="faq">
+      <div class="wrap faq-grid">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Domande frequenti</p>
+          <h2>Il gestionale per birrifici, <em>in breve.</em></h2>
+          <p class="sec-lead">Quello che ci chiedono più spesso i birrai prima di provarlo.</p>
+        </div>
+        <div class="faq-list" data-reveal>
+          <details>
+            <summary>Cos'è Fermento?</summary>
+            <p>Fermento è un gestionale per birrifici artigianali e agricoli. In un solo programma tieni magazzino delle materie prime a lotti, ricette, cotte, vendite, fusti e report. Con il modulo agricolo gestisci anche campi, raccolte e maltazione.</p>
+          </details>
+          <details>
+            <summary>Fermento funziona su Mac e su Windows?</summary>
+            <p>Sì. Fermento è un programma desktop per Windows e Mac. Si installa sul computer e si aggiorna da solo all'avvio.</p>
+          </details>
+          <details>
+            <summary>Dove vengono salvati i dati del birrificio?</summary>
+            <p>Sul tuo computer. Il database è locale, senza cloud obbligatorio. I backup automatici vanno nella cartella che scegli, anche Google Drive o Dropbox.</p>
+          </details>
+          <details>
+            <summary>Fermento è adatto a un birrificio agricolo?</summary>
+            <p>Sì. Il modulo agricolo copre la filiera completa: campi e semine, trattamenti con tempo di carenza calcolato, raccolte, analisi e calibratura dell'orzo, maltazione e tracciabilità dal campo alla bottiglia. Se non ti serve resta spento. <a href="birrificio-agricolo/">Scopri il modulo agricolo</a>.</p>
+          </details>
+          <details>
+            <summary>Come funziona la tracciabilità dei lotti?</summary>
+            <p>Ogni carico di materia prima diventa un lotto, ogni cotta scarica il magazzino partendo dal lotto più vecchio e ogni vendita sa da che cotta arriva. Puoi registrare anche i lotti di bottiglie, tappi e fusti per l'HACCP.</p>
+          </details>
+          <details>
+            <summary>Posso sostituire Excel e i quaderni con Fermento?</summary>
+            <p>Sì, è pensato per questo. Giacenze, ricette, cotte, clienti, fusti in giro e scadenze stanno in un solo programma, che ti avvisa quando una scorta è bassa o un lotto sta per scadere.</p>
+          </details>
+          <details>
+            <summary>Cos'è Bira?</summary>
+            <p>Bira è l'assistente AI di Fermento. Le fai domande in italiano e risponde con i dati del tuo birrificio. È in sola lettura e i dati di clienti e fornitori non lasciano il tuo computer.</p>
+          </details>
+          <details>
+            <summary>Posso provare Fermento gratis?</summary>
+            <p>Sì. Fermento Demo è la versione completa con dati di esempio. Compila il modulo e ricevi il link per scaricarla entro 24 ore. La configurazione iniziale si fa insieme in circa mezz'ora.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ INIZIA ============ -->
     <section class="sec start" id="inizia">
       <div class="wrap start-grid">
@@ -634,12 +752,17 @@
   <footer class="site-footer">
     <div class="wrap footer-row">
       <span class="wordmark wordmark-sm">FERMENTO</span>
+      <nav class="footer-nav" aria-label="Pagine">
+        <a href="./">Gestionale birrificio</a>
+        <a href="birrificio-agricolo/">Gestionale birrificio agricolo</a>
+        <a href="#faq">Domande frequenti</a>
+      </nav>
       <span>v1.5.0 · © 2026 · Tutti i diritti riservati</span>
       <span>Powered by <a href="https://127hub.it" target="_blank" rel="noopener">127HUB</a></span>
     </div>
   </footer>
 
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-  <script src="script.js?v=8" defer></script>
+  <script src="script.js?v=9" defer></script>
 </body>
 </html>
